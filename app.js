@@ -3,7 +3,6 @@ var path = require('path');
 var bodyParser = require('body-parser');
 
 require('./app/models/db');
-require('./app/models/requests');
 
 var routesAPI = require('./app/routers/index');
 
