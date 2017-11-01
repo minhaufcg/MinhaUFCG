@@ -6,7 +6,7 @@ var userSchema = Schema({
     name: {type: String, require: true},
     role: {
         type: String, 
-        enum: ["student", "teacher", "servant"]
+        enum: ["student", "teacher", "servant", "admin"]
     },
     registration: {type: String, require: true}
 });

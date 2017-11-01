@@ -39,6 +39,8 @@ process.on('SIGINT', function () {
 });
 
 // Listen for SIGTERM emitted when Heroku shuts down process
+// TODO: search for a more generic process to listen
+// author: Ruan Eloy - date: 01/11/17
 process.on('SIGTERM', function () {
     gracefulShutdown('Heroku app shutdown', function () {
         process.exit(0);
