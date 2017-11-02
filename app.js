@@ -1,18 +1,18 @@
-var express = require('express');
-var path = require('path');
-var bodyParser = require('body-parser');
-var morgan = require('morgan');
+const express = require('express');
+const path = require('path');
+const bodyParser = require('body-parser');
+const morgan = require('morgan');
 
 require('./app/models/db');
 
-var routesAPI = require('./app/routers/index');
+const routesAPI = require('./app/routers/index');
 
-var app = express();
+const app = express();
 
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public/dist')));
 
 app.use('/api', routesAPI);
 
