@@ -12,7 +12,7 @@ var requestSchema = Schema({
     status: {
         type: String, 
         "default": "pending", 
-        enum: ["pending", "in progress", "done"]
+        enum: ["pending", "ongoing", "done"]
     },
     priority: {
         type: String, 
