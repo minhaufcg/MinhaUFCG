@@ -22,7 +22,10 @@ var requestSchema = Schema({
     category: {
         type: String, 
         required: true, 
-        enum: ["restauração de patrimônio", "adição de novo recurso", "reforço de vigilânica", "reposição de recurso", "reparação de recurso em mal funcionamento", "reabastecimento de recurso", "limpeza de ambiente", "reformulação de ambiente"]
+        enum: [	"property restoring",			"adding of new resource",
+		"surveillance reforcement"		"resource replacement",
+		"malfunctioning resource repairing", 	"resource replenishment",
+		"enviroment cleaning", 			"enviroment reformulation"]
     },
     coords: {type: [Number], index: "2dsphere"}, // [longitude, latitude]
     createdOn: {type: Date, "default": Date.now}
