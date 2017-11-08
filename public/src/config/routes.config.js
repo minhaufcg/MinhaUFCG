@@ -10,8 +10,8 @@
           .state({
             name: 'home',
             url: '/',
-            // templateUrl: '',
-            // controller: ''
+            templateUrl: 'src/app/components/home.html',
+            //controller: ''
           });
       }
     ]);
