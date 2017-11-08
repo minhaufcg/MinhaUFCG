@@ -1,15 +1,15 @@
-var mongoose = require('mongoose');
-var Request = mongoose.model('Request');
+const mongoose = require('mongoose');
+const Request = mongoose.model('Request');
 
 mongoose.Promise = require('bluebird');
 
 
-var sendJsonResponse = function sendJsonResponse(res, status, content) {
+const sendJsonResponse = function sendJsonResponse(res, status, content) {
     res.status(status);
     res.json(content);
 };
 
-var requestsReadOne = function (req, res) {
+const requestsReadOne = function (req, res) {
     if (req.params && req.params.requestId) {
         Request
             .findById(req.params.requestId)
@@ -28,8 +28,8 @@ var requestsReadOne = function (req, res) {
     }
 };
 
-var requestsCollection = function (req, res) {
-    var query = req.query.status? {status: req.query.status} : {};
+const requestsCollection = function (req, res) {
+    const query = req.query.status? {status: req.query.status} : {};
     Request
         .find(query)
         .then(requests => {
@@ -40,8 +40,8 @@ var requestsCollection = function (req, res) {
         });
 };
 
-var requestsCreateOne = function (req, res) {
-    var newRequest = {
+const requestsCreateOne = function (req, res) {
+    const newRequest = {
         author: req.body.author,
         description: req.body.description,
         status: req.body.status,
@@ -58,11 +58,11 @@ var requestsCreateOne = function (req, res) {
         });
 };
 
-var requestsUpdateOne = function (req, res) {
+const requestsUpdateOne = function (req, res) {
     // TODO: use json patch 
     // author: Ruan Eloy 05/11/17
-    var requestId = req.params.requestId;
-    var update = {
+    const requestId = req.params.requestId;
+    const update = {
         description: req.body.description,
         status: req.body.status,
         priority: req.body.priority,
@@ -82,8 +82,8 @@ var requestsUpdateOne = function (req, res) {
     }
 };
 
-var requestsDeleteOne = function (req, res) {
-    var requestId = req.params.requestId;
+const requestsDeleteOne = function (req, res) {
+    const requestId = req.params.requestId;
     if(requestId) {
         Request
             .findByIdAndRemove(requestId)

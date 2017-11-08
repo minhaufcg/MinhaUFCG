@@ -1,15 +1,15 @@
-var mongoose = require('mongoose');
-var User = mongoose.model('User');
+const mongoose = require('mongoose');
+const User = mongoose.model('User');
 
 mongoose.Promise = require('bluebird');
 
 
-var sendJsonResponse = function sendJsonResponse(res, status, content) {
+const sendJsonResponse = function sendJsonResponse(res, status, content) {
     res.status(status);
     res.json(content);
 };
 
-var usersReadOne = function (req, res) {
+const usersReadOne = function (req, res) {
     if (req.params.userId) {
         User
             .findById(req.params.userId)
@@ -28,8 +28,8 @@ var usersReadOne = function (req, res) {
     }
 };
 
-var usersCreateOne = function (req, res) {
-    var newUser = {
+const usersCreateOne = function (req, res) {
+    const newUser = {
         name: req.body.name,
         role: req.body.role,
         registration: req.body.registration
@@ -45,9 +45,9 @@ var usersCreateOne = function (req, res) {
         });
 };
 
-var usersUpdateOne = function (req, res) {
-    var userId = req.params.userId;
-    var update = {
+const usersUpdateOne = function (req, res) {
+    const userId = req.params.userId;
+    const update = {
         name: req.body.name,
         role: req.body.role
     };
@@ -67,8 +67,8 @@ var usersUpdateOne = function (req, res) {
     }
 };
 
-var usersDeleteOne = function (req, res) {
-    var userId = req.params.userId;
+const usersDeleteOne = function (req, res) {
+    const userId = req.params.userId;
     if(userId) {
         User
             .findByIdAndRemove(userId)
