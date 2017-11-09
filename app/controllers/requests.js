@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const Request = mongoose.model('Request');
+const Request = require('../models/requests');
 const RestHelper = require('../helpers/rest-helper')
 mongoose.Promise = require('bluebird');
 
@@ -93,8 +93,25 @@ const requestsDeleteOne = function (req, res) {
 };
 
 
+const getByAuthor = function (req, res) {
+    const userId = req.params.userId;
+    if (userId) {
+        console.log(userId);
+        Request.getByAuthor(userId)
+            .then(function (requests) {
+                RestHelper.sendJsonResponse(res,200,requests);
+            })
+            .catch(function (err) {
+                RestHelper.sendJsonResponse(res,404, err);
+            });
+    } else {
+        RestHelper.sendJsonResponse(res, 300, {"message" : "Missing user id"});
+    }
+};
+
 module.exports = {
     requestsReadOne: requestsReadOne,
+    getByAuthor : getByAuthor,
     requestsCollection: requestsCollection,
     requestsCreateOne: requestsCreateOne,
     requestsUpdateOne: requestsUpdateOne,
