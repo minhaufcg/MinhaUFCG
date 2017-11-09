@@ -1,8 +1,8 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 
-var requestsCtrl = require('../controllers/requests');
-var usersCtrl = require('../controllers/users');
+const requestsCtrl = require('../controllers/requests');
+const usersCtrl = require('../controllers/users');
 
 
 router.get('/requests', requestsCtrl.requestsCollection);

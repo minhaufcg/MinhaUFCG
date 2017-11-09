@@ -1,57 +1,101 @@
-var mongoose = require('mongoose');
-var Request = mongoose.model('Request');
+const mongoose = require('mongoose');
+const Request = mongoose.model('Request');
+
+mongoose.Promise = require('bluebird');
 
 
-var sendJsonResponse = function sendJsonResponse(res, status, content) {
+const sendJsonResponse = function sendJsonResponse(res, status, content) {
     res.status(status);
     res.json(content);
 };
 
-var requestsReadOne = function (req, res) {
+const requestsReadOne = function (req, res) {
     if (req.params && req.params.requestId) {
         Request
             .findById(req.params.requestId)
-            .exec(function (err, request) {
+            .then(request => {
                 if (!request) {
                     sendJsonResponse(res, 404, {"message": "Request not found"});
-                } else if (err) {
-                    sendJsonResponse(res, 404, err);
                 } else {
                     sendJsonResponse(res, 200, request);
                 }
+            })
+            .catch(err => {
+                sendJsonResponse(res, 404, err);
             });
     } else {
-        sendJsonResponse(res, 404, {"message": "No requestId in request"});
+        sendJsonResponse(res, 404, {"message": "No requestId"});
     }
 };
 
-var requestsCollection = function (req, res) {
-    sendJsonResponse(res, 200, {"status": "success"});
+const requestsCollection = function (req, res) {
+    const query = req.query.status? {status: req.query.status} : {};
+    Request
+        .find(query)
+        .then(requests => {
+            sendJsonResponse(res, 200, requests);
+        })
+        .catch(err => {
+            sendJsonResponse(res, 404, err);
+        });
 };
 
-var requestsCreateOne = function (req, res) {
-    var newRequest = {
+const requestsCreateOne = function (req, res) {
+    const newRequest = {
         author: req.body.author,
         description: req.body.description,
         status: req.body.status,
         priority: req.body.priority,
         coords: req.body.coords
     };
-    Request.create(newRequest, function (err, request) {
-        if (err) {
-            sendJsonResponse(res, 400, err);
-        } else {
+    Request
+        .create(newRequest)
+        .then(request => {
             sendJsonResponse(res, 201, request);
-        }
-    });
+        })
+        .catch(err => {
+            sendJsonResponse(res, 400, err);
+        });
 };
 
-var requestsUpdateOne = function (req, res) {
-    sendJsonResponse(res, 200, {"status": "success"});
+const requestsUpdateOne = function (req, res) {
+    // TODO: use json patch 
+    // author: Ruan Eloy 05/11/17
+    const requestId = req.params.requestId;
+    const update = {
+        description: req.body.description,
+        status: req.body.status,
+        priority: req.body.priority,
+        coords: req.body.coords
+    };
+    if(requestId) {
+        Request
+            .findOneAndUpdate({ "_id": requestId }, update)
+            .then(oldRequest => {
+                sendJsonResponse(res, 200, oldRequest);
+            })
+            .catch(err => {
+                sendJsonResponse(res, 400, err);
+            });
+    } else {
+        sendJsonResponse(res, 404, { "message": "No requestId" });
+    }
 };
 
-var requestsDeleteOne = function (req, res) {
-    sendJsonResponse(res, 200, {"status": "success"});
+const requestsDeleteOne = function (req, res) {
+    const requestId = req.params.requestId;
+    if(requestId) {
+        Request
+            .findByIdAndRemove(requestId)
+            .then(request => {
+                sendJsonResponse(res, 204, null);
+            })
+            .catch(err => {
+                sendJsonResponse(res, 404, err);
+            });
+    } else {
+        sendJsonResponse(res, 404, {"message": "No requestId"});
+    }
 };
 
 
