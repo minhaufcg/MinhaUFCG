@@ -23,4 +23,10 @@ const requestSchema = Schema({
     createdOn: {type: Date, "default": Date.now}
 });
 
-mongoose.model("Request", requestSchema);
+requestSchema.statics.getByAuthor = function (userId) {
+    return this.find({author : userId}).exec(function (requests) {
+        return requests;
+    });
+};
+
+module.exports = mongoose.model("Request", requestSchema);

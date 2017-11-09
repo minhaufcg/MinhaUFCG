@@ -8,6 +8,7 @@ const usersCtrl = require('../controllers/users');
 router.get('/requests', requestsCtrl.requestsCollection);
 router.post('/requests', requestsCtrl.requestsCreateOne);
 router.get('/requests/:requestId', requestsCtrl.requestsReadOne);
+router.get('/user/:userId/requests', requestsCtrl.getByAuthor);
 router.put('/requests/:requestId', requestsCtrl.requestsUpdateOne);
 router.delete('/requests/:requestId', requestsCtrl.requestsDeleteOne);
 
