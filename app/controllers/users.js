@@ -32,7 +32,8 @@ const usersCreateOne = function (req, res) {
     const newUser = {
         name: req.body.name,
         role: req.body.role,
-        registration: req.body.registration
+        registration: req.body.registration,
+        password: req.body.password
     };
 
     User
