@@ -1,50 +1,86 @@
-var mongoose = require('mongoose');
-var User = mongoose.model('User');
+const mongoose = require('mongoose');
+const User = mongoose.model('User');
 
-var sendJsonResponse = function sendJsonResponse(res, status, content) {
+mongoose.Promise = require('bluebird');
+
+
+const sendJsonResponse = function sendJsonResponse(res, status, content) {
     res.status(status);
     res.json(content);
 };
 
-var usersReadOne = function (req, res) {
-    if (req.params && req.params.userId) {
+const usersReadOne = function (req, res) {
+    if (req.params.userId) {
         User
             .findById(req.params.userId)
-            .exec(function (err, user) {
+            .then(user => {
                 if (!user) {
                     sendJsonResponse(res, 404, { "message": "User not found" });
-                } else if (err) {
-                    sendJsonResponse(res, 404, err);
                 } else {
                     sendJsonResponse(res, 200, user);
                 }
+            })
+            .catch(err => {
+                sendJsonResponse(res, 404, err);
             });
     } else {
         sendJsonResponse(res, 404, { "message": "No userId in request" });
     }
 };
 
-var usersCreateOne = function (req, res) {
-    var newUser = {
+const usersCreateOne = function (req, res) {
+    const newUser = {
         name: req.body.name,
         role: req.body.role,
         registration: req.body.registration
     };
-    User.create(newUser, function (err, user) {
-        if (err) {
-            sendJsonResponse(res, 400, err);
-        } else {
+
+    User
+        .create(newUser)
+        .then(user => {
             sendJsonResponse(res, 201, user);
-        }
-    });
+        })
+        .catch(err => {
+            sendJsonResponse(res, 400, err);
+        });
 };
 
-var usersUpdateOne = function (req, res) {
-    sendJsonResponse(res, 200, {"status": "success"});
+const usersUpdateOne = function (req, res) {
+    const userId = req.params.userId;
+    const update = {
+        name: req.body.name,
+        role: req.body.role
+    };
+
+    if(userId) {
+        User
+            .findByIdAndUpdate({"_id": userId}, update)
+            .then(oldUser => {
+                sendJsonResponse(res, 200, oldUser);
+            })
+            .catch(err => {
+                sendJsonResponse(res, 400, err);
+            });
+
+    } else {
+        sendJsonResponse(res, 404, { "message": "No userId" });
+    }
 };
 
-var usersDeleteOne = function (req, res) {
-    sendJsonResponse(res, 200, {"status": "success"});
+const usersDeleteOne = function (req, res) {
+    const userId = req.params.userId;
+    if(userId) {
+        User
+            .findByIdAndRemove(userId)
+            .then(user => {
+                sendJsonResponse(res, 204, null);
+            })
+            .catch(err => {
+                sendJsonResponse(res, 400, err);
+            });
+    } else {
+        sendJsonResponse(res, 200, {"message": "No userId"});
+    }
 };
 
 

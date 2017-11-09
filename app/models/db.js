@@ -1,5 +1,5 @@
-var mongoose = require('mongoose');
-var bdURI = 'mongodb://localhost/minhaufcg';
+const mongoose = require('mongoose');
+const bdURI = 'mongodb://localhost/minhaufcg';
 
 mongoose.connect(bdURI, {useMongoClient: true});
 
@@ -17,7 +17,7 @@ mongoose.connection.on('disconnected', function () {
 });
 
 
-var gracefulShutdown = function (msg, callback) {
+const gracefulShutdown = function (msg, callback) {
     mongoose.connection.close(function () {
         console.log('Mongoose disconnected through ' + msg);
         callback();
