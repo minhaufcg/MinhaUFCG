@@ -1,4 +1,4 @@
-angular.module("mufcg").factory('Request', function UserFactory($http, PROPERTIES) {
+angular.module("mufcg").factory('Request', function RequestFactory($http, PROPERTIES) {
     return {
         create : function (userId, description, priority) {
             var params = {
