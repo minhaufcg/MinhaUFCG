@@ -1,13 +1,7 @@
 const mongoose = require('mongoose');
 const Request = mongoose.model('Request');
-
+const RestHelper = require('../helpers/rest-helper')
 mongoose.Promise = require('bluebird');
-
-
-const sendJsonResponse = function sendJsonResponse(res, status, content) {
-    res.status(status);
-    res.json(content);
-};
 
 const requestsReadOne = function (req, res) {
     if (req.params && req.params.requestId) {
@@ -15,16 +9,16 @@ const requestsReadOne = function (req, res) {
             .findById(req.params.requestId)
             .then(request => {
                 if (!request) {
-                    sendJsonResponse(res, 404, {"message": "Request not found"});
+                    RestHelper.sendJsonResponse(res, 404, {"message": "Request not found"});
                 } else {
-                    sendJsonResponse(res, 200, request);
+                    RestHelper.sendJsonResponse(res, 200, request);
                 }
             })
             .catch(err => {
-                sendJsonResponse(res, 404, err);
+                RestHelper.sendJsonResponse(res, 404, err);
             });
     } else {
-        sendJsonResponse(res, 404, {"message": "No requestId"});
+        RestHelper.sendJsonResponse(res, 404, {"message": "No requestId"});
     }
 };
 
@@ -33,10 +27,10 @@ const requestsCollection = function (req, res) {
     Request
         .find(query)
         .then(requests => {
-            sendJsonResponse(res, 200, requests);
+            RestHelper.sendJsonResponse(res, 200, requests);
         })
         .catch(err => {
-            sendJsonResponse(res, 404, err);
+            RestHelper.sendJsonResponse(res, 404, err);
         });
 };
 
@@ -51,10 +45,10 @@ const requestsCreateOne = function (req, res) {
     Request
         .create(newRequest)
         .then(request => {
-            sendJsonResponse(res, 201, request);
+            RestHelper.sendJsonResponse(res, 201, request);
         })
         .catch(err => {
-            sendJsonResponse(res, 400, err);
+            RestHelper.sendJsonResponse(res, 400, err);
         });
 };
 
@@ -72,13 +66,13 @@ const requestsUpdateOne = function (req, res) {
         Request
             .findOneAndUpdate({ "_id": requestId }, update)
             .then(oldRequest => {
-                sendJsonResponse(res, 200, oldRequest);
+                RestHelper.sendJsonResponse(res, 200, oldRequest);
             })
             .catch(err => {
-                sendJsonResponse(res, 400, err);
+                RestHelper.sendJsonResponse(res, 400, err);
             });
     } else {
-        sendJsonResponse(res, 404, { "message": "No requestId" });
+        RestHelper.sendJsonResponse(res, 404, { "message": "No requestId" });
     }
 };
 
@@ -88,13 +82,13 @@ const requestsDeleteOne = function (req, res) {
         Request
             .findByIdAndRemove(requestId)
             .then(request => {
-                sendJsonResponse(res, 204, null);
+                RestHelper.sendJsonResponse(res, 204, null);
             })
             .catch(err => {
-                sendJsonResponse(res, 404, err);
+                RestHelper.sendJsonResponse(res, 404, err);
             });
     } else {
-        sendJsonResponse(res, 404, {"message": "No requestId"});
+        RestHelper.sendJsonResponse(res, 404, {"message": "No requestId"});
     }
 };
 
