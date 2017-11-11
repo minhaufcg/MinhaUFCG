@@ -15,7 +15,7 @@ angular.module("mufcg").factory('User', function UserFactory($http, PROPERTIES) 
             var params = {
                 registration : registration,
                 password : password
-            }
+            };
 
             return $http.post(PROPERTIES.restBasePath + "/auth",$.param(params), { headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' }});
 
