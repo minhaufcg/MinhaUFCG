@@ -4,8 +4,7 @@
   "description": "WebApp destinado a melhorar o contato entre alunos e funcionários da Universidade Federal de Campina e a prefeitura universitária.",
   "main": "server.js",
   "scripts": {
-    "prestart": "mkdir -p public/dist/lib && cp -r node_modules/bootstrap/ public/dist/lib/",
-    "start": "webpack -p --progress && node ./bin/www",
+    "start": "node ./bin/www",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

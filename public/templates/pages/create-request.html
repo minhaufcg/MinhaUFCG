@@ -1,0 +1,31 @@
+<div class="row" style="margin-top: 50px">
+    <div class="col-md-3 col-md-offset-4 col-sm-10 col-sm-offset-1">
+        <div class="panel panel-info" style="min-height: 280px;">
+            <div class="div" style="margin: 20px">
+                <form action="">
+                    <h3 class="col-xs-offset-4" style="margin-bottom: 30px">Nova solicitação</h3>
+                    <div style="margin-bottom: 25px;" class="input-group">
+                        <span class="input-group-addon">Descrição</span>
+                        <input focus-on-show class="form-control input-lg" name="Descrição" value="" placeholder="descrição" ng-model="description">
+                    </div>
+                    <div style="margin-bottom: 25px;" class="input-group">
+                        <span class="input-group-addon">Prioridade</span>
+                        <select class="form-control" style="height: 45px;" ng-model="priority">
+                            <option value="high">Alta</option>
+                            <option value="regular">Média</option>
+                            <option value="low">Baixa</option>
+                        </select>
+                    </div>
+
+                    <div style="float : right" style="bottom: 40px;">
+                        <a class="btn btn-primary btn-lg" style="margin-right: 10px" href="/#!/home">Voltar</a>
+                        <a class="btn btn-success btn-lg" ng-click="create()">Cadastrar</a>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{{requests}}
