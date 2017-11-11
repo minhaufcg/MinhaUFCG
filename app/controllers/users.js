@@ -24,7 +24,6 @@ const usersReadOne = function (req, res) {
 };
 
 const auth = function (req,res) {
-      console.log(req.body.registration);
       if (req.body.registration && req.body.password) {
           User.getByRegistration(req.body.registration)
           .then (function (user) {
