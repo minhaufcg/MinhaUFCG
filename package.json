@@ -4,6 +4,8 @@
   "description": "WebApp destinado a melhorar o contato entre alunos e funcionários da Universidade Federal de Campina e a prefeitura universitária.",
   "main": "server.js",
   "scripts": {
+    "doc": "jsdoc -c ./jsdoc.conf.json",
+    "lint": "jshint --config ./.jshintrc --extract=auto app/ public/js/; exit 0",
     "preinstall": "cd public && npm i",
     "start": "node ./bin/www",
     "test": "echo \"Error: no test specified\" && exit 1"
