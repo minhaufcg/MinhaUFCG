@@ -2,8 +2,10 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
+const passport = require('passport');
 
 require('./app/models/db');
+require('./app/config/passport');
 
 const routesAPI = require('./app/routers/index');
 
@@ -13,6 +15,7 @@ app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static(path.join(__dirname, 'public/dist')));
+app.use(passport.initialize());
 
 app.use('/api', routesAPI);
 

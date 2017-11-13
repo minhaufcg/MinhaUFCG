@@ -22,6 +22,7 @@ const userSchema = Schema({
     },
     registration: {
         type: String,
+        unique: true,
         required: true
     },
     hash: String,
@@ -34,13 +35,12 @@ const ITERATIONS = 1000;
 const KEYLEN = 64;
 const DIGEST = 'sha512';
 
-
 userSchema.methods.setPassword = function(password){
   this.salt = crypto.randomBytes(NUMBER_OF_BYTES).toString(ENCODING);
   this.hash = crypto.pbkdf2Sync(password, this.salt, ITERATIONS, KEYLEN, DIGEST).toString(ENCODING);
 };
 
-userSchema.methods.validPassword = function(password) {
+userSchema.methods.verifyPassword = function(password) {
   const hash = crypto.pbkdf2Sync(password, this.salt, ITERATIONS, KEYLEN, DIGEST).toString(ENCODING);
   return this.hash === hash;
 };
@@ -55,7 +55,7 @@ userSchema.method.generateJwt = function() {
     return jwt.sign({
         _id: this._id,
         name: this.name,
-        email: this.email,
+        registration: this.registration,
         exp: parseInt(expiry.getTime() / THOUSAND_SECONDS)
     }, SECRET);
 };

@@ -8,7 +8,10 @@ const requestSchema = Schema({
         ref: "User", 
         required: true
     },
-    description: {type: String, required: true},
+    description: {
+        type: String, 
+        required: true
+    },
     status: {
         type: String, 
         "default": "pending", 
@@ -19,8 +22,14 @@ const requestSchema = Schema({
         required: true, 
         enum: ["high", "medium", "low"]
     },
-    coords: {type: [Number], index: "2dsphere"}, // [longitude, latitude]
-    createdOn: {type: Date, "default": Date.now}
+    coords: {
+        type: [Number], // [longitude, latitude]
+        index: "2dsphere"
+    }, 
+    createdOn: {
+        type: Date, 
+        "default": Date.now
+    }
 });
 
 mongoose.model("Request", requestSchema);
