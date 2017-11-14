@@ -1,13 +1,8 @@
 const mongoose = require('mongoose');
-const User = mongoose.model('User');
+const User = require('../models/users');
+const RestHelper = require('../helpers/rest-helper');
 
 mongoose.Promise = require('bluebird');
-
-
-const sendJsonResponse = function sendJsonResponse(res, status, content) {
-    res.status(status);
-    res.json(content);
-};
 
 const usersReadOne = function (req, res) {
     if (req.params.userId) {
@@ -15,33 +10,63 @@ const usersReadOne = function (req, res) {
             .findById(req.params.userId)
             .then(user => {
                 if (!user) {
-                    sendJsonResponse(res, 404, { "message": "User not found" });
+                    RestHelper.sendJsonResponse(res, 404, { "message": "User not found" });
                 } else {
-                    sendJsonResponse(res, 200, user);
+                    RestHelper.sendJsonResponse(res, 200, user);
                 }
             })
             .catch(err => {
-                sendJsonResponse(res, 404, err);
+                RestHelper.sendJsonResponse(res, 404, err);
             });
     } else {
-        sendJsonResponse(res, 404, { "message": "No userId in request" });
+        RestHelper.sendJsonResponse(res, 404, { "message": "No userId in request" });
     }
+};
+
+const auth = function (req,res) {
+      if (req.body.registration && req.body.password) {
+          User.getByRegistration(req.body.registration)
+          .then (function (user) {
+              user = user[0];
+
+              if (!user) {
+                  RestHelper.sendJsonResponse(res, 404, { "message": "User not found" });
+              }
+
+              else {
+                  if (user.password === req.body.password) {
+                      RestHelper.sendJsonResponse(res, 200, user);
+                  }
+
+                  else {
+                      RestHelper.sendJsonResponse(res, 403, { "message" : "Not authorized"});
+                  }
+              }
+          })
+          .catch( function () {
+              RestHelper.sendJsonResponse(res, 403, err);
+          });
+      }
+      else {
+          RestHelper.sendJsonResponse(res, 403, { "message" : "Not authorized"});
+      }
 };
 
 const usersCreateOne = function (req, res) {
     const newUser = {
         name: req.body.name,
         role: req.body.role,
-        registration: req.body.registration
+        registration: req.body.registration,
+        password: req.body.password
     };
 
     User
         .create(newUser)
         .then(user => {
-            sendJsonResponse(res, 201, user);
+            RestHelper.sendJsonResponse(res, 201, user);
         })
         .catch(err => {
-            sendJsonResponse(res, 400, err);
+            RestHelper.sendJsonResponse(res, 400, err);
         });
 };
 
@@ -56,14 +81,14 @@ const usersUpdateOne = function (req, res) {
         User
             .findByIdAndUpdate({"_id": userId}, update)
             .then(oldUser => {
-                sendJsonResponse(res, 200, oldUser);
+                RestHelper.sendJsonResponse(res, 200, oldUser);
             })
             .catch(err => {
-                sendJsonResponse(res, 400, err);
+                RestHelper.sendJsonResponse(res, 400, err);
             });
 
     } else {
-        sendJsonResponse(res, 404, { "message": "No userId" });
+        RestHelper.sendJsonResponse(res, 404, { "message": "No userId" });
     }
 };
 
@@ -73,13 +98,13 @@ const usersDeleteOne = function (req, res) {
         User
             .findByIdAndRemove(userId)
             .then(user => {
-                sendJsonResponse(res, 204, null);
+                RestHelper.sendJsonResponse(res, 204, null);
             })
             .catch(err => {
-                sendJsonResponse(res, 400, err);
+                RestHelper.sendJsonResponse(res, 400, err);
             });
     } else {
-        sendJsonResponse(res, 200, {"message": "No userId"});
+        RestHelper.sendJsonResponse(res, 200, {"message": "No userId"});
     }
 };
 
@@ -88,5 +113,6 @@ module.exports = {
     usersReadOne: usersReadOne,
     usersCreateOne: usersCreateOne,
     usersUpdateOne: usersUpdateOne,
-    usersDeleteOne: usersDeleteOne
+    usersDeleteOne: usersDeleteOne,
+    auth : auth
 };

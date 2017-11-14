@@ -1,0 +1,24 @@
+{
+  "name": "minhaufcg",
+  "version": "0.0.0",
+  "description": "WebApp destinado a melhorar o contato entre alunos e funcionários da Universidade Federal de Campina e a prefeitura universitária.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/minhaufcg/MinhaUFCG.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/minhaufcg/MinhaUFCG/issues"
+  },
+  "homepage": "https://github.com/minhaufcg/MinhaUFCG#readme",
+  "dependencies": {
+    "@uirouter/angularjs": "^1.0.10",
+    "angular": "^1.6.6",
+    "angular-animate": "^1.6.6",
+    "angular-bootstrap": "^0.12.2",
+    "bootstrap": "^3.3.7",
+    "font-awesome": "^4.7.0",
+    "jquery": "^3.2.1"
+  }
+}
