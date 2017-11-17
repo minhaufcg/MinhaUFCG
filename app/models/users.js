@@ -60,4 +60,11 @@ userSchema.method.generateJwt = function() {
     }, SECRET);
 };
 
-mongoose.model("User", userSchema);
+userSchema.statics.getByRegistration = function (registration) {
+    console.log(registration);
+    return this.find({registration : registration}).exec(function (user) {
+        return user;
+    });
+};
+
+module.exports = mongoose.model("User", userSchema);
