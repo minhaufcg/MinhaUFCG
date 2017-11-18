@@ -19,6 +19,14 @@ const requestSchema = Schema({
         required: true, 
         enum: ["high", "medium", "low"]
     },
+    category: {
+        type: String, 
+        required: true, 
+        enum: [	"property restoring",			"adding of new resource",
+		"surveillance reforcement"		"resource replacement",
+		"malfunctioning resource repairing", 	"resource replenishment",
+		"enviroment cleaning", 			"enviroment reformulation"]
+    },
     coords: {type: [Number], index: "2dsphere"}, // [longitude, latitude]
     createdOn: {type: Date, "default": Date.now}
 });
