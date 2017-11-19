@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const bdURI = 'mongodb://localhost/minhaufcg';
+const bdURI = 'mongodb://dev:dev@ds259085.mlab.com:59085/minhaufcg';
 
 mongoose.connect(bdURI, {useMongoClient: true});
 
