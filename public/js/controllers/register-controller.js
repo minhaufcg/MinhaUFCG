@@ -6,7 +6,7 @@ angular.module('mufcg')
             alert('Senhas divergem!');
 
         else
-            User.register($scope.user.name, $scope.user.password, $scope.user.identification, "student").then(function (data) {
+            User.register($scope.user.name, $scope.user.identification, $scope.user.password, "student").then(function (data) {
                 alert('Usuário cadastrado com sucesso');
                 $location.url("/#!/login");
             });

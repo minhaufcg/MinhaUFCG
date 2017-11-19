@@ -3,56 +3,26 @@
         <meta charset="utf-8">
         <base href="/" />
 
-        <title>MinhaUFCG</title>
+<head>
+    <meta charset="utf-8">
+    <base href="/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <!-- Angularjs libraries -->
-        <script src="./libs/angular/angular.min.js"></script>
-        <script src="./libs/angular-animate/angular-animate.min.js"></script>
-        <script src="./libs/angular-bootstrap/ui-bootstrap.min.js"></script>
+    <title>MinhaUFCG</title>
 
-        <!-- Jquery libraries -->
-        <script src="./libs/jquery/dist/jquery.min.js"></script>
+</head>
 
-        <!-- Bootstrap libraries -->
-        <script src="./libs/bootstrap/dist/js/bootstrap.min.js"></script>
-        <script src="./libs/bootbox.js/bootbox.js"></script>
+<body ng-app="mufcg">
+    <!--<nav-bar></nav-bar>-->
+    <div ui-view></div>
 
-        <!-- Extra libraries -->
-        <script src="./libs/angular-ui-router/release/angular-ui-router.min.js"></script>
+    <script src="/dist/vendors.js"></script>
+    <!-- Angular style sheet -->
+    <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Poiret+One" rel="stylesheet">
 
-        <!-- Angular style sheet -->
-        <link rel="stylesheet" href="libs/bootstrap/dist/css/bootstrap.min.css">
-        <link rel="stylesheet" href="styles/main.css">
-        <link href="https://fonts.googleapis.com/css?family=Poiret+One" rel="stylesheet">
-
-        <!-- Main application libraries -->
-        <script src="./app.js"></script>
-
-        <!-- Controllers -->
-        <script src="js/controllers/login-controller.js"></script>
-        <script src="js/controllers/register-controller.js"></script>
-        <script src="js/controllers/create-request-controller.js"></script>
-        <script src="js/controllers/home-controller.js"></script>
-
-        <script src="js/factories/rest/user.js"></script>
-        <script src="js/factories/rest/request.js"></script>
-        <script src="js/constants/properties.js"></script>
-
-
-        <!--Directives-->
-        <script src="js/directives/nav-bar/nav-bar.js"></script>
-        <script src="js/directives/logo/logo.js"></script>
-
-        <!--Services-->
-        <script src="js/services/auth-service.js"></script>
-        <script src="js/services/messagebox-service.js"></script>
-
-        <script src="js/config/router.js"></script>
-    </head>
-
-    <body ng-app="mufcg" ng-cloak>
-        <nav-bar></nav-bar>
-        <ui-view></ui-view>
-    </body>
+    <script src="/dist/application.js"></script>
+    <script src="/dist/templates.js"></script>
+</body>
 
 </html>
