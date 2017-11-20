@@ -13,8 +13,8 @@ passport.use(new LocalStratagy({
             if(!user) {
                 return done(null, false,{message: 'User not found'});
             }
-            if (!user.verifyPassword(password)) {
-                return done(null, false, {message: 'Password is wrong'});
+            if (!user.isValidPassword(password)) {
+                return done(null, false, {message: 'Not authorized'});
             }
             return done(null, user);
         })

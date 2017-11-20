@@ -3,6 +3,7 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const passport = require('passport');
+const RestHelper = require('./app/helpers/rest-helper');
 
 require('./app/models/db');
 require('./app/config/passport');
@@ -19,17 +20,19 @@ app.use(passport.initialize());
 
 app.use('/api', routesAPI);
 
-app.get('/', function(req, res) {
+app.get('/', (req, res) => {
     res.render('index');
 });
 
-app.use(function(err, req, res, next) {
-    res.status(err.status || 500);
-    res.send({
-        message: err.message,
-        error: err
-    });
+app.get('*', (req, res) => {
+    res.sendfile('./public/index.html');
 });
 
+app.use((err, req, res, next) => {
+    RestHelper.sendJsonResponse(res, err.status || 500, {
+        message: err.message,
+        error: err
+    })
+});
 
 module.exports = app;

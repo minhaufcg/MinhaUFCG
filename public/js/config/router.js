@@ -34,7 +34,6 @@ angular.module('mufcg').config(function ($stateProvider, $urlRouterProvider, $lo
     $stateProvider.state(homeState);
 
     $urlRouterProvider.otherwise("/");
-
+    
     $locationProvider.html5Mode(true);
-    $locationProvider.hashPrefix('!');
 });

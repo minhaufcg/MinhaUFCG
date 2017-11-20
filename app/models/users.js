@@ -1,6 +1,9 @@
 const mongoose = require('mongoose');
-const crypto =  require('crypto');
+const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const variables = require('../config/variables');
+
+mongoose.Promise = require('bluebird');
 
 const Schema = mongoose.Schema;
 
@@ -13,7 +16,7 @@ const userSchema = Schema({
     email: {
         type: String,
         required: true,
-        unique: true
+        unique: false
     },
     role: {
         type: String, 
@@ -22,48 +25,50 @@ const userSchema = Schema({
     },
     registration: {
         type: String,
-        unique: true,
+        unique: false,
         required: true
     },
-    hash: String,
-    salt: String
+    hash: String
 });
 
-const NUMBER_OF_BYTES = 16;
-const ENCODING = 'hex';
-const ITERATIONS = 1000;
-const KEYLEN = 64;
-const DIGEST = 'sha512';
-
 userSchema.methods.setPassword = function(password){
-  this.salt = crypto.randomBytes(NUMBER_OF_BYTES).toString(ENCODING);
-  this.hash = crypto.pbkdf2Sync(password, this.salt, ITERATIONS, KEYLEN, DIGEST).toString(ENCODING);
+    const NUMBER_OF_ROUNDS = 11;
+    const salt = bcrypt.genSaltSync(NUMBER_OF_ROUNDS);
+    this.hash = bcrypt.hashSync(password, salt);
 };
 
-userSchema.methods.verifyPassword = function(password) {
-  const hash = crypto.pbkdf2Sync(password, this.salt, ITERATIONS, KEYLEN, DIGEST).toString(ENCODING);
-  return this.hash === hash;
+userSchema.methods.isValidPassword = function(password) {
+  return bcrypt.compareSync(password, this.hash);
 };
 
-userSchema.method.generateJwt = function() {
-    const NUMBER_OF_DAYS = 7;
+userSchema.methods.generateJwt = function() {
+    const NUMBER_OF_DAYS = 1;
     const THOUSAND_SECONDS = 1000;
-    const SECRET = 'SECRET';
+    const secret = variables.secret;
     const expiry = new Date();
     expiry.setDate(expiry.getDate() + NUMBER_OF_DAYS);
-
-    return jwt.sign({
+    
+    const payload = { 
         _id: this._id,
-        name: this.name,
-        registration: this.registration,
-        exp: parseInt(expiry.getTime() / THOUSAND_SECONDS)
-    }, SECRET);
+        registration: this.registration
+    };
+
+    const token = jwt.sign(
+        payload, 
+        secret,
+        { expiresIn: parseInt(expiry.getTime() / THOUSAND_SECONDS) }
+    );
+
+    return token;
 };
 
-userSchema.statics.getByRegistration = function (registration) {
-    console.log(registration);
-    return this.find({registration : registration}).exec(function (user) {
+userSchema.statics.getByRegistration = function(registration) {
+    this.find({registration : registration})
+    .then(user => {
         return user;
+    })
+    .catch(err => {
+        return null;
     });
 };
 

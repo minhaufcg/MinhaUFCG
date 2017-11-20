@@ -2,27 +2,22 @@
     <head>
         <meta charset="utf-8">
         <base href="/" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<head>
-    <meta charset="utf-8">
-    <base href="/" />
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>MinhaUFCG</title>
+    </head>
 
-    <title>MinhaUFCG</title>
+    <body ng-app="mufcg">
+        <!--<nav-bar></nav-bar>-->
+        <div ui-view></div>
 
-</head>
+        <script src="/dist/vendors.js"></script>
+        <!-- Angular style sheet -->
+        <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
+        <link href="https://fonts.googleapis.com/css?family=Poiret+One" rel="stylesheet">
 
-<body ng-app="mufcg">
-    <!--<nav-bar></nav-bar>-->
-    <div ui-view></div>
-
-    <script src="/dist/vendors.js"></script>
-    <!-- Angular style sheet -->
-    <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
-    <link href="https://fonts.googleapis.com/css?family=Poiret+One" rel="stylesheet">
-
-    <script src="/dist/application.js"></script>
-    <script src="/dist/templates.js"></script>
-</body>
+        <script src="/dist/application.js"></script>
+        <script src="/dist/templates.js"></script>
+    </body>
 
 </html>
