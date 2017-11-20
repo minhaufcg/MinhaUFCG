@@ -1,13 +1,12 @@
 angular.module("mufcg").factory('Request', function RequestFactory($http, PROPERTIES) {
     return {
-        create : function (userId, description, priority) {
+        create : function (userId, request) {
             var params = {
-                author : userId,
-                description : description,
-                priority : priority
+                'author' : userId,
+                'request' : request
             };
 
-            return $http.post(PROPERTIES.restBasePath + "/requests",$.param(params), { headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' } });
+            return $http.post(PROPERTIES.restBasePath + "/requests", params, { headers: {'Content-Type': 'application/json; charset=UTF-8' } });
         },
 
         getByAuthor : function (userId) {
