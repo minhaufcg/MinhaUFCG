@@ -59,4 +59,5 @@ typings/
 
 docs/
 .idea
-public/dist
+public/dist.idea
+public/node_modules
