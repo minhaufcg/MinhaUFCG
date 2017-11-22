@@ -58,6 +58,6 @@ typings/
 .env
 
 docs/
-public/dist
+public/dist/
 .idea/
 public/node_modules
