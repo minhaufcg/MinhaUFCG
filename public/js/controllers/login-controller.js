@@ -1,12 +1,17 @@
 angular.module('mufcg')
-.controller('LoginCtrl', function ($scope, User, authService, $location){
-    $scope.auth = function () {
-        User.auth($scope.registration, $scope.password).then(function (res) {
-            authService.setCurrentUser(res.data);
-            alert("Bem vindo " + authService.getCurrentUser().name.split(" ")[0]);
+.controller('LoginCtrl', function ($scope, User, AuthService, $location, $state){
+
+    $scope.login = function() {
+        var credentials = {
+            registration: $scope.registration,
+            password: $scope.password
+        };        
+        AuthService.login(credentials).then(function success(response) {
+            var user = AuthService.getCurrentUser();
+            alert("Bem vindo " + user.name);
             $location.url("/home");
-        }, function (err) {
-            alert("Login ou senha incorreto");
+        }, function error(response) {
+            alert("Matrícula ou senha incorreta");
         });
-    }
+    };
 });

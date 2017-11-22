@@ -23,7 +23,6 @@ router.post('/users/', usersCtrl.usersCreateOne);
 router.get('/users/:userId', auth, usersCtrl.usersReadOne);
 router.put('/users/:userId', auth, usersCtrl.usersUpdateOne);
 router.delete('/users/:userId', auth, usersCtrl.usersDeleteOne);
-router.post('/auth/', usersCtrl.auth);
 router.post('/login/', usersCtrl.login);
 
 module.exports = router;

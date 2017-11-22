@@ -1,4 +1,6 @@
-angular.module('mufcg').config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
+const app = angular.module('mufcg');
+
+app.config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
 
     const loginState = {
         name : 'login',
@@ -36,4 +38,18 @@ angular.module('mufcg').config(function ($stateProvider, $urlRouterProvider, $lo
     $urlRouterProvider.otherwise("/");
     
     $locationProvider.html5Mode(true);
+});
+
+app.run(function authInterceptor(AuthService, $transitions, $state) {
+    var allowedRoutes = {
+        login: true,
+        register: true
+    };
+    $transitions.onStart({
+        to: function(state) {
+            return !allowedRoutes[state.name] && !AuthService.isLoggedIn();
+        }
+    }, function(transition) {
+        $state.go("login");
+    });
 });

@@ -1,14 +1,17 @@
 angular.module('mufcg')
-.controller('RegisterCtrl', function ($scope, $location, User) {
-    console.log("register");
+.controller('RegisterCtrl', function ($scope, $location, User, AuthService) {
+    
     $scope.register = function() {
-        if ($scope.user.password !== $scope.confirmPassword)
+        if ($scope.user.password !== $scope.confirmPassword) {
             alert('Senhas divergem!');
-
-        else
-            User.register($scope.user.name, $scope.user.identification, $scope.user.password, "student").then(function (data) {
+        } else {
+            $scope.user.role = "student";
+            AuthService.register($scope.user).then(function () {
                 alert('Usuário cadastrado com sucesso');
-                $location.url("/#!/login");
+                $location.url("/login");
+            }, function error(response) {
+                console.warn(response.message);
             });
-    }
+        }
+    };
 });

@@ -81,42 +81,13 @@ const usersDeleteOne = function (req, res) {
     }
 };
 
-const auth = function (req,res) {
-    if (req.body.registration && req.body.password) {
-        User.getByRegistration(req.body.registration)
-        .then (function (user) {
-            user = user[0];
-
-            if (!user) {
-                RestHelper.sendJsonResponse(res, 404, { "message": "User not found" });
-            }
-
-            else {
-                if (user.password === req.body.password) {
-                    RestHelper.sendJsonResponse(res, 200, user);
-                }
-
-                else {
-                    RestHelper.sendJsonResponse(res, 403, { "message" : "Not authorized"});
-                }
-            }
-        })
-        .catch( function () {
-            RestHelper.sendJsonResponse(res, 403, err);
-        });
-    }
-    else {
-        RestHelper.sendJsonResponse(res, 403, { "message" : "Not authorized"});
-    }
-};
-
 const login = function (req, res) {
     passport.authenticate('local', (err, user, info) => {
         if(err) {
             RestHelper.sendJsonResponse(res, 404, err);
         } else if(user) {
             const token = user.generateJwt();
-            RestHelper.sendJsonResponse(res, 200, {"token": token});
+            RestHelper.sendJsonResponse(res, 200, {token: token});
         } else {
             RestHelper.sendJsonResponse(res, 401, info);
         }
@@ -128,6 +99,5 @@ module.exports = {
     usersCreateOne: usersCreateOne,
     usersUpdateOne: usersUpdateOne,
     usersDeleteOne: usersDeleteOne,
-    auth : auth,
     login: login
 };

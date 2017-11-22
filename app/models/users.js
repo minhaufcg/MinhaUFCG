@@ -49,8 +49,9 @@ userSchema.methods.generateJwt = function() {
     expiry.setDate(expiry.getDate() + NUMBER_OF_DAYS);
     
     const payload = { 
-        _id: this._id,
-        registration: this.registration
+        id: this._id,
+        registration: this.registration,
+        name: this.name
     };
 
     const token = jwt.sign(
