@@ -20,6 +20,10 @@ app.get('/', function(req, res) {
     res.render('index');
 });
 
+app.get('*', (req, res) => {
+    res.sendfile('./public/index.html')
+});
+
 app.use(function(err, req, res, next) {
     res.status(err.status || 500);
     res.send({

@@ -1,1 +1,2 @@
-angular.module('mufcg', ['ngAnimate','ui.bootstrap','ui.router']);
+angular.module('mufcg', ['ngAnimate','ui.bootstrap','ui.router', 'ngMap']);
+

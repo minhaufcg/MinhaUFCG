@@ -1,18 +1,33 @@
 angular.module('mufcg')
-.controller('CreateRequestCtrl', function ($scope, authService, Request) {
-    loadRequests();
-
+.controller('CreateRequestCtrl', function ($scope, authService, Request, $uibModal, messagebox, $location) {
+    //authService.getCurrentUser()._id
     $scope.create = function() {
-        Request.create(authService.getCurrentUser()._id, $scope.description, $scope.priority).then( function () {
-            alert('Solicitação criada');
+        Request.create(authService.getCurrentUser()._id, $scope.request).then( function () {
+            messagebox.success('Solicitação cadastrada com sucesso',undefined,creationCallback());
         }, function (err) {
-            alert('Falha');
+            messagebox.fail('Ocorreu um erro na criação da solicitação');
         });
+    };
+
+    function creationCallback() {
+        $location.url("/home");
     }
 
-    function loadRequests () {
-        Request.getByAuthor(authService.getCurrentUser()._id).then( function (requests) {
-            $scope.requests = requests;
+    $scope.pop = function () {
+        var modalInstance = $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: '/templates/components/map-modal.html',
+            controller: 'MapModalCtrl',
+            scope : this,
+            size: 'xl'
         });
-    }
+
+        modalInstance.result.then(function (marker) {
+            $scope.request.location.lat = marker.lat;
+            $scope.request.location.lng = marker.lng;
+            $scope.request.location.geolocation = marker.geolocation;
+        });
+    };
 });
