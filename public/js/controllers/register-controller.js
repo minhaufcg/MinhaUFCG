@@ -1,5 +1,5 @@
 angular.module('mufcg')
-.controller('RegisterCtrl', function ($scope, $location, User, AuthService) {
+.controller('RegisterCtrl', function ($scope, $state, User, AuthService) {
     
     $scope.register = function() {
         if ($scope.user.password !== $scope.confirmPassword) {
@@ -8,7 +8,7 @@ angular.module('mufcg')
             $scope.user.role = "student";
             AuthService.register($scope.user).then(function () {
                 alert('Usuário cadastrado com sucesso');
-                $location.url("/login");
+                $state.go("login");
             }, function error(response) {
                 console.warn(response.message);
             });

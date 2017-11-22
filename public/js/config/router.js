@@ -1,6 +1,6 @@
 const app = angular.module('mufcg');
 
-app.config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
+app.config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
 
     const loginState = {
         name : 'login',
@@ -36,8 +36,33 @@ app.config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
     $stateProvider.state(homeState);
 
     $urlRouterProvider.otherwise("/");
-    
+
     $locationProvider.html5Mode(true);
+
+    $httpProvider.interceptors.push('BearerAuthInterceptor');
+});
+
+app.factory('BearerAuthInterceptor', function(AuthService, $q, $state) {
+    return {
+        request: function(config) {
+            config.headers = config.headers || {};
+
+            if(AuthService.isLoggedIn()) {
+                var token = AuthService.getToken();
+                config.headers.Authorization = 'Bearer ' + token;
+            }
+
+            return config;
+        },
+
+        responseError: function(response) {
+            if(response.status === 401 || response.status === 403) {
+                $state.go('login');
+            }
+
+            return $q.reject(response);
+        }
+    };
 });
 
 app.run(function authInterceptor(AuthService, $transitions, $state) {

@@ -1,5 +1,5 @@
 angular.module('mufcg')
-.controller('LoginCtrl', function ($scope, User, AuthService, $location, $state){
+.controller('LoginCtrl', function ($scope, User, AuthService, $state){
 
     $scope.login = function() {
         var credentials = {
@@ -9,7 +9,7 @@ angular.module('mufcg')
         AuthService.login(credentials).then(function success(response) {
             var user = AuthService.getCurrentUser();
             alert("Bem vindo " + user.name);
-            $location.url("/home");
+            $state.go("home");
         }, function error(response) {
             alert("Matrícula ou senha incorreta");
         });
