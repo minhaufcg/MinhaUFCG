@@ -18,7 +18,6 @@ router.get('/user/:userId/requests', auth, requestsCtrl.getByAuthor);
 router.put('/requests/:requestId', auth, requestsCtrl.requestsUpdateOne);
 router.delete('/requests/:requestId', auth, requestsCtrl.requestsDeleteOne);
 
-
 router.post('/users/', usersCtrl.usersCreateOne);
 router.get('/users/:userId', auth, usersCtrl.usersReadOne);
 router.put('/users/:userId', auth, usersCtrl.usersUpdateOne);

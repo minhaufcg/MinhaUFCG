@@ -9,8 +9,12 @@ const requestSchema = Schema({
         required: true
     },
     description: {
-        type: String, 
+        type: String,
         required: true
+    },
+    title : {
+        type : String,
+        required : true
     },
     status: {
         type: String, 
@@ -19,15 +23,17 @@ const requestSchema = Schema({
     },
     priority: {
         type: String, 
-        required: true, 
-        enum: ["high", "medium", "low"]
+        required: true,
+        enum: ["high", "regular", "low"]
     },
-    coords: {
-        type: [Number], // [longitude, latitude]
-        index: "2dsphere"
-    }, 
+    location: {
+        description : String,
+        lat : Number,
+        lng : Number,
+        geolocation : Boolean
+    },
     createdOn: {
-        type: Date, 
+        type: Date,
         "default": Date.now
     }
 });

@@ -1,5 +1,5 @@
 angular.module('mufcg')
-.controller('RegisterCtrl', function ($scope, $state, User, AuthService) {
+.controller('RegisterCtrl', function ($scope, $state, AuthService) {
     
     $scope.register = function() {
         if ($scope.user.password !== $scope.confirmPassword) {

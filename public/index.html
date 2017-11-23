@@ -2,18 +2,21 @@
     <head>
         <meta charset="utf-8">
         <base href="/" />
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
 
         <title>MinhaUFCG</title>
     </head>
-
-    <body ng-app="mufcg">
-        <!--<nav-bar></nav-bar>-->
+    <body ng-app="mufcg" style="background-image: url(resources/degrade.jpg); background-size: cover">
+        <nav-bar></nav-bar>
         <div ui-view></div>
+
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCg-DgACUXO_nUZ5W9A5VHe2H0wD-9tycs"></script>
 
         <script src="/dist/vendors.js"></script>
         <!-- Angular style sheet -->
         <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="./node_modules/font-awesome/css/font-awesome.min.css">
+        <link rel="stylesheet" href="./styles/main.css">
         <link href="https://fonts.googleapis.com/css?family=Poiret+One" rel="stylesheet">
 
         <script src="/dist/application.js"></script>
