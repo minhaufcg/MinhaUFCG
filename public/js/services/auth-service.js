@@ -55,8 +55,8 @@ angular
         var register = function (user) {
             var deferred = $q.defer();
 
-            $http.post('/api/users', user).then(function success(data) {
-                saveToken(data.token);
+            $http.post('/api/users', user).then(function success(response) {
+                saveToken(response.data.token);
                 deferred.resolve()
             }, function error(response) {
                 deferred.reject(response);                
