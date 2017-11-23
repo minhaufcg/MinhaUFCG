@@ -1,13 +1,13 @@
 const express = require('express');
 const jwt = require('express-jwt');
 
-const variables = require('../config/variables')
+const constants = require('../config/constants')
 const requestsCtrl = require('../controllers/requests');
 const usersCtrl = require('../controllers/users');
 
 const router = express.Router();
 const auth = jwt({
-    secret: variables.secret,
+    secret: constants.secret,
     userProperty: 'payload'
 });
 

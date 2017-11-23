@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const variables = require('../config/variables');
+const constants = require('../config/constants');
 
 mongoose.Promise = require('bluebird');
 
@@ -44,7 +44,7 @@ userSchema.methods.isValidPassword = function(password) {
 userSchema.methods.generateJwt = function() {
     const NUMBER_OF_DAYS = 1;
     const THOUSAND_SECONDS = 1000;
-    const secret = variables.secret;
+    const secret = constants.secret;
     const expiry = new Date();
     expiry.setDate(expiry.getDate() + NUMBER_OF_DAYS);
     

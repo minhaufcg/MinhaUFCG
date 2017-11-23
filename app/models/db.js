@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
-const variables = require('../config/variables');
+const constants = require('../config/constants');
 
-mongoose.connect(variables.database, {useMongoClient: true});
+mongoose.connect(constants.database, {useMongoClient: true});
 
 // Listen for Mongoose connection events and output statuses to console
 mongoose.connection.on('connected', function () {
-    console.log('Mongoose connected to ' + variables.database);
+    console.log('Mongoose connected to ' + constants.database);
 });
 
 mongoose.connection.on('error', function (err) {
