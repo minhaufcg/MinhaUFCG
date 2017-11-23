@@ -1,10 +1,10 @@
 angular.module('mufcg')
-.controller('HomeCtrl', function ($scope,NgMap, mapHelper, LOCATIONS, AuthService, Request) {
+.controller('HomeCtrl', function ($scope, NgMap, mapHelper, LOCATIONS, AuthService, Request) {
     var map = undefined;
     var ufcgPolygon = undefined;
 
     $scope.initMap = function () {
-        NgMap.getMap().then(function(mapResult) {
+        NgMap.getMap().then(function (mapResult) {
             map = mapResult;
 
             if (!mapHelper.getMap())
@@ -26,9 +26,11 @@ angular.module('mufcg')
         Request.getByAuthor(AuthService.getCurrentUser().id).then(function (res) {
             res.data.forEach(function (request) {
                 var location = {};
-                location.lat = request.location.lat;
-                location.lng = request.location.lng;
-                createMarker(request.title, request.description, undefined, request.createdOn, location);
+                if ('location' in request) {
+                    location.lat = request.location.lat;
+                    location.lng = request.location.lng;
+                    createMarker(request.title, request.description, undefined, request.createdOn, location);
+                }
             });
         });
     }
@@ -48,7 +50,7 @@ angular.module('mufcg')
         marker.setPosition(location);
         marker.setTitle(title);
 
-        marker.addListener('click', function() {
+        marker.addListener('click', function () {
             infowindow.open(map, marker);
         });
 

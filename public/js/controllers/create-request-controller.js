@@ -2,11 +2,15 @@ angular.module('mufcg')
 .controller('CreateRequestCtrl', function ($scope, AuthService, Request, $uibModal, messagebox, $location) {
     //authService.getCurrentUser()._id
     $scope.create = function() {
-        Request.create(AuthService.getCurrentUser().id, $scope.request).then( function () {
-            messagebox.success('Solicitação cadastrada com sucesso',undefined,creationCallback());
-        }, function (err) {
-            messagebox.fail('Ocorreu um erro na criação da solicitação');
-        });
+        if (verifyRequest()) {
+
+            Request.create(AuthService.getCurrentUser().id, $scope.request).then(function () {
+                messagebox.success('Solicitação cadastrada com sucesso', undefined, creationCallback());
+            }, function (err) {
+                messagebox.fail('Ocorreu um erro na criação da solicitação');
+            });
+            
+        }
     };
 
     function creationCallback() {
@@ -20,7 +24,7 @@ angular.module('mufcg')
             ariaDescribedBy: 'modal-body',
             templateUrl: '/templates/components/map-modal.html',
             controller: 'MapModalCtrl',
-            scope : this,
+            scope: this,
             size: 'xl'
         });
 
@@ -30,4 +34,10 @@ angular.module('mufcg')
             $scope.request.location.geolocation = marker.geolocation;
         });
     };
+
+    function verifyRequest() {
+        return $scope.request.title && $scope.request.priority && 
+                $scope.request.location && $scope.request.location.lat &&
+                $scope.request.location.lng;
+    }
 });
