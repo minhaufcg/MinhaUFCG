@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
-const bdURI = 'mongodb://dev:dev@ds259085.mlab.com:59085/minhaufcg';
+const constants = require('../config/constants');
 
-mongoose.connect(bdURI, {useMongoClient: true});
+mongoose.connect(constants.database, {useMongoClient: true});
 
 // Listen for Mongoose connection events and output statuses to console
 mongoose.connection.on('connected', function () {
-    console.log('Mongoose connected to ' + bdURI);
+    console.log('Mongoose connected to ' + constants.database);
 });
 
 mongoose.connection.on('error', function (err) {

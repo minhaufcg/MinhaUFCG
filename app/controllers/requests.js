@@ -37,10 +37,10 @@ const requestsCollection = function (req, res) {
 const requestsCreateOne = function (req, res) {
     const newRequest = {
         author: req.body.author,
-        description: req.body.description,
-        status: req.body.status,
-        priority: req.body.priority,
-        coords: req.body.coords
+        title : req.body.request.title,
+        description: req.body.request.description,
+        priority: req.body.request.priority,
+        location: req.body.request.location
     };
     Request
         .create(newRequest)

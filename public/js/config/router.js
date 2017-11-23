@@ -1,4 +1,6 @@
-angular.module('mufcg').config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
+const app = angular.module('mufcg');
+
+app.config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
 
     const loginState = {
         name : 'login',
@@ -36,5 +38,45 @@ angular.module('mufcg').config(function ($stateProvider, $urlRouterProvider, $lo
     $urlRouterProvider.otherwise("/");
 
     $locationProvider.html5Mode(true);
-    $locationProvider.hashPrefix('!');
+
+    $httpProvider.interceptors.push('BearerAuthInterceptor');
+});
+
+app.factory('BearerAuthInterceptor', function($injector, $q, $state) {
+    return {
+        request: function(config) {
+            var AuthService = $injector.get('AuthService');
+            config.headers = config.headers || {};
+            if(AuthService.isLoggedIn()) {
+                var token = AuthService.getToken();
+                config.headers.Authorization = 'Bearer ' + token;
+            }
+
+            return config;
+        },
+
+        responseError: function(response) {
+            if(response.status === 401 || response.status === 403) {
+                $state.go('login');
+            }
+
+            return $q.reject(response);
+        }
+    };
+});
+
+app.run(function authInterceptor(AuthService, $transitions, $state, $location) {
+    var allowedRoutes = {
+        login: true,
+        register: true
+    };
+    $transitions.onStart({
+        to: function(state) {
+            return !allowedRoutes[state.name] && !AuthService.isLoggedIn();
+        }
+    }, function(transition) {
+        $state.go("login", {
+            "redirect": $location.path()
+        });
+    });
 });

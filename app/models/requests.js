@@ -8,7 +8,14 @@ const requestSchema = Schema({
         ref: "User", 
         required: true
     },
-    description: {type: String, required: true},
+    description: {
+        type: String,
+        required: true
+    },
+    title : {
+        type : String,
+        required : true
+    },
     status: {
         type: String, 
         "default": "pending", 
@@ -16,11 +23,19 @@ const requestSchema = Schema({
     },
     priority: {
         type: String, 
-        required: true, 
-        enum: ["high", "medium", "low"]
+        required: true,
+        enum: ["high", "regular", "low"]
     },
-    coords: {type: [Number], index: "2dsphere"}, // [longitude, latitude]
-    createdOn: {type: Date, "default": Date.now}
+    location: {
+        description : String,
+        lat : Number,
+        lng : Number,
+        geolocation : Boolean
+    },
+    createdOn: {
+        type: Date,
+        "default": Date.now
+    }
 });
 
 requestSchema.statics.getByAuthor = function (userId) {
