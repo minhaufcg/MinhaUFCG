@@ -6,7 +6,7 @@ angular.module('mufcg')
         scope : {
             page : '='
         },
-        controller : function ($scope, $location) {
+        controller : function ($scope, $location, AuthService) {
             $scope.enabled = false;
             $scope.collapsed = false;
             const FORBIDDEN = ['/login', '/register', '/'];
@@ -14,10 +14,6 @@ angular.module('mufcg')
             $scope.getCollapseClass = function () {
                 return $scope.isCollapsed ?
                  "collapse navbar-collapse is-collapsed" : "collapse navbar-collapse";
-            };
-
-            $scope.test = function () {
-                $scope.collapsed = !$scope.collapsed;
             };
 
             $scope.getCollapsedStyle = function () {
@@ -29,11 +25,12 @@ angular.module('mufcg')
             }
 
             $scope.$on('$locationChangeSuccess', function(event){
-                console.log($location.url());
                 $scope.enabled = $location.url() && FORBIDDEN.indexOf($location.url()) === -1;
-                console.log($scope.enabled);
             });
 
+            $scope.logout = function () {
+                AuthService.logout();
+            };
         }
     }
 });
