@@ -16,7 +16,7 @@ gulp.task('angular', () => {
       presets: ['es2015'],
       plugins: ['angularjs-annotate']
     }))
-    //.pipe(uglify())
+    .pipe(uglify())
     .pipe(gulp.dest('public/dist'));
 });
 
@@ -26,7 +26,7 @@ gulp.task('template', () => {
   ])
     .pipe(htmlmin({ collapseWhitespace: true }))
     .pipe(templateCache({ root: 'components', module: 'mufcg' }))
-    // .pipe(uglify())
+    .pipe(uglify())
     .pipe(gulp.dest('public/dist'));
 });
 
@@ -40,7 +40,8 @@ gulp.task('vendor', () => {
     'public/node_modules/bootstrap/dist/js/bootstrap.min.js',
     'public/node_modules/@uirouter/angularjs/release/angular-ui-router.min.js',
     'public/node_modules/bootbox/bootbox.js',
-    'public/node_modules/ngmap/build/scripts/ng-map.min.js'
+    'public/node_modules/ngmap/build/scripts/ng-map.min.js',
+    'public/node_modules/angular-base64-upload/dist/angular-base64-upload.min.js'
   ])
     .pipe(concat('vendors.js'))
     .pipe(gulp.dest('public/dist'));
