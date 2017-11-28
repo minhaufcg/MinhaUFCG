@@ -29,7 +29,11 @@ angular.module('mufcg')
                 if ('location' in request) {
                     location.lat = request.location.lat;
                     location.lng = request.location.lng;
-                    createMarker(request.title, request.description, undefined, request.createdOn, location);
+                    let image =  undefined;
+                    if (request.img) {
+                        image = 'data:'.concat(request.img.filetype, ';base64,', request.img.base64);
+                    }
+                    createMarker(request.title, request.description, image, request.createdOn, location);
                 }
             });
         });
@@ -38,7 +42,7 @@ angular.module('mufcg')
     function createMarker(title, description, image, date, location) {
         var contentString = '<h1>' + title + '</h1>' +
             '<p>' + description + '</p>' +
-            '<img src="' + image + '" style="height: 100px; width : auto" alt=""><br>' +
+            '<img src="' + image + '" style="height: 100px; width : auto" alt=""><br>'+
             '<p>' + date + '</p>';
 
         var infowindow = new google.maps.InfoWindow({
