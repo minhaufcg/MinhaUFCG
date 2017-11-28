@@ -29,7 +29,7 @@ angular.module('mufcg')
                 if ('location' in request) {
                     location.lat = request.location.lat;
                     location.lng = request.location.lng;
-                    let image =  undefined;
+                    let image;
                     if (request.img) {
                         image = 'data:'.concat(request.img.filetype, ';base64,', request.img.base64);
                     }

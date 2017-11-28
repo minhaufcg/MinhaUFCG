@@ -1,7 +1,7 @@
 const express = require('express');
 const jwt = require('express-jwt');
 
-const constants = require('../config/constants')
+const constants = require('../config/constants');
 const requestsCtrl = require('../controllers/requests');
 const usersCtrl = require('../controllers/users');
 

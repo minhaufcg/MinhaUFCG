@@ -3,5 +3,5 @@ angular.module('mufcg')
     return {
         restrict : 'AE',
         templateUrl : '/templates/directives/logo/logo.html'
-    }
+    };
 });

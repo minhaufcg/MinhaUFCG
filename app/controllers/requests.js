@@ -1,6 +1,7 @@
+"use strict";
 const mongoose = require('mongoose');
 const Request = require('../models/requests');
-const RestHelper = require('../helpers/rest-helper')
+const RestHelper = require('../helpers/rest-helper');
 mongoose.Promise = require('bluebird');
 
 const requestsReadOne = function (req, res) {

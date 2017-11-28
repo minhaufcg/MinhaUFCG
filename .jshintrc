@@ -92,6 +92,8 @@
       "require": true,
       "module": true,
       "process": true,
-      "exports": true
+      "exports": true,
+      "bootbox": true,
+      "google": true
     }        
 }

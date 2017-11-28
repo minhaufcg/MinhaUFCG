@@ -2,7 +2,7 @@
 angular
     .module('mufcg')
     .service('AuthService', function AuthService($q, $http, $window) {
-        var currentUser = undefined;
+        var currentUser;
 
         var saveToken = function (token) {
             $window.localStorage['token'] = token;
@@ -57,7 +57,7 @@ angular
 
             $http.post('/api/users', user).then(function success(response) {
                 saveToken(response.data.token);
-                deferred.resolve()
+                deferred.resolve();
             }, function error(response) {
                 deferred.reject(response);                
             });
