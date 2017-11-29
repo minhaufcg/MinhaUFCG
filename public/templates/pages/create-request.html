@@ -22,11 +22,16 @@
                     </div>
                     <div style="margin-bottom: 25px;" class="input-group">
                         <span class="input-group-addon">Referência</span>
-                        <input focus-on-show class="form-control input-lg" name="Descrição do local" value="" placeholder="descrição da localização" ng-model="request.location.description">
+                        <input focus-on-show class="form-control input-lg" name="Descrição do local" value="" placeholder="descrição da localização"
+                            ng-model="request.location.description">
                     </div>
+
+                    <label for="image">Imagem/Foto</label>
+                    <input type="file" id="image" ng-model="request.img" base-sixty-four-input>
+
                     <div class="input-group" style="margin-bottom: 25px; width: 10%;">
-                      <span class="input-group-addon">Localização</span>
-                      <span class="input-group-btn">
+                        <span class="input-group-addon">Localização</span>
+                        <span class="input-group-btn">
                         <a class="btn btn-info btn-lg" ng-click="pop()"><i class="fa fa-map-marker" aria-hidden="true"></i></a>
                       </span>
                     </div>
