@@ -2,38 +2,66 @@ const app = angular.module('mufcg');
 
 app.config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
 
-    const loginState = {
+    const home = {
+        name : 'home',
+        url : '/home',
+        templateUrl : '/templates/pages/home.html',
+        controller : 'HomeCtrl'
+    };
+    
+    const login = {
         name : 'login',
         url : '/',
         templateUrl : '/templates/pages/login.html',
         controller : 'LoginCtrl'
     };
 
-    const registerState = {
+    const register = {
         name : 'register',
         url : '/register',
         templateUrl : '/templates/pages/register.html',
         controller : 'RegisterCtrl'
     };
 
-    const createRequestState = {
+    const createRequest = {
         name : 'create_request',
         url : '/request/create',
         templateUrl : '/templates/pages/create-request.html',
         controller : 'CreateRequestCtrl'
     };
 
-    const homeState = {
-        name : 'home',
-        url : '/home',
-        templateUrl : '/templates/pages/home.html',
-        controller : 'HomeCtrl'
-    };
+    const manage = {
+        name: 'manage',
+        url: '/manage',
+        templateUrl: '/templates/pages/manage.html',
+        controller: 'ManageCtrl',
+        redirectTo: 'manage.requests'
+    }
 
-    $stateProvider.state(loginState);
-    $stateProvider.state(registerState);
-    $stateProvider.state(createRequestState);
-    $stateProvider.state(homeState);
+    const manageRequests = {
+        name: 'manage.requests',
+        templateUrl: "/templates/pages/manage-requests.html"
+    }
+
+    const manageMaps = {
+        name: 'manage.maps',
+        templateUrl: "/templates/pages/manage-maps.html"
+    }
+
+    const manageAdmins = {
+        name: 'manage.admins',
+        templateUrl: "/templates/pages/manage-admins.html"
+    }
+
+    $stateProvider
+        .state(login)
+        .state(register)
+        .state(createRequest)
+        .state(home)
+        .state(manage)
+        .state(manageRequests)
+        .state(manageMaps)
+        .state(manageAdmins)
 
     $urlRouterProvider.otherwise("/");
 
