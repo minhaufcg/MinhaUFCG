@@ -3,12 +3,10 @@ angular.module('mufcg')
     return {
         restrict : "AE",
         templateUrl : '/templates/directives/nav-bar/nav-bar.html',
-        scope : {
-            page : '='
-        },
+        scope : {},
         controller : function ($scope, $location, AuthService) {
             $scope.enabled = false;
-            $scope.collapsed = false;
+            $scope.isCollapsed = false;
             const FORBIDDEN = ['/login', '/register', '/'];
 
             $scope.getCollapseClass = function () {
@@ -17,12 +15,8 @@ angular.module('mufcg')
             };
 
             $scope.getCollapsedStyle = function () {
-                return $scope.collapsed ? { 'margin-top' : '28px', 'z-index' : 20} : {};
+                return $scope.isCollapsed ? { 'margin-top' : '28px', 'z-index' : 20} : {};
             };
-
-            $scope.isActive = function (page) {
-                return page === $scope.page ? "active" : "";
-            }
 
             $scope.$on('$locationChangeSuccess', function(event){
                 $scope.enabled = $location.url() && FORBIDDEN.indexOf($location.url()) === -1;

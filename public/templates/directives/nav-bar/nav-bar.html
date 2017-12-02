@@ -12,9 +12,10 @@
         </div>
 
         <ul class="nav navbar-nav navbar-right">
-            <li ng-class="isActive('create')"><a href="/request/create">Nova solicitação</a></li>
-            <li ng-class="isActive('history')"><a href="#">Histórico</a></li>
-            <li ><a href="/login" ng-click="logout()">Logout</a></li>
+            <li ui-sref-active="active" ui-sref="manage"><a href="#">Gerenciar</a></li>
+            <li ui-sref-active="active" ui-sref="create_request"><a href="#">Nova solicitação</a></li>
+            <li ui-sref-active="active" ><a href="#">Histórico</a></li>
+            <li><a ng-click="logout()" ui-sref="login">Logout</a></li>
         </ul>
     </div>
 </nav>
