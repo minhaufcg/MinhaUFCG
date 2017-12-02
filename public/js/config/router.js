@@ -2,6 +2,13 @@ const app = angular.module('mufcg');
 
 app.config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
 
+    const home = {
+        name : 'home',
+        url : '/home',
+        templateUrl : '/templates/pages/home.html',
+        controller : 'HomeCtrl'
+    };
+    
     const login = {
         name : 'login',
         url : '/',
@@ -21,13 +28,6 @@ app.config(function ($stateProvider, $urlRouterProvider, $locationProvider, $htt
         url : '/request/create',
         templateUrl : '/templates/pages/create-request.html',
         controller : 'CreateRequestCtrl'
-    };
-
-    const home = {
-        name : 'home',
-        url : '/home',
-        templateUrl : '/templates/pages/home.html',
-        controller : 'HomeCtrl'
     };
 
     const manage = {
