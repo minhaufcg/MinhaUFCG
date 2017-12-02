@@ -39,7 +39,6 @@ const requestsCreateOne = function (req, res) {
         author: req.body.author,
         title : req.body.request.title,
         description: req.body.request.description,
-        priority: req.body.request.priority,
         location: req.body.request.location,
         img: req.body.request.img
     };
@@ -60,7 +59,6 @@ const requestsUpdateOne = function (req, res) {
     const update = {
         description: req.body.description,
         status: req.body.status,
-        priority: req.body.priority,
         coords: req.body.coords
     };
     if(requestId) {
