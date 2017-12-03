@@ -4,6 +4,7 @@ const jwt = require('express-jwt');
 const constants = require('../config/constants')
 const requestsCtrl = require('../controllers/requests');
 const usersCtrl = require('../controllers/users');
+const adminsCtrl = require('../controllers/admins');
 
 const router = express.Router();
 const auth = jwt({
@@ -23,5 +24,8 @@ router.get('/users/:userId', auth, usersCtrl.usersReadOne);
 router.put('/users/:userId', auth, usersCtrl.usersUpdateOne);
 router.delete('/users/:userId', auth, usersCtrl.usersDeleteOne);
 router.post('/login/', usersCtrl.login);
+
+router.post('/admins/:userId', auth, adminsCtrl.addAdmin);
+router.delete('/admins/:userId', auth, adminsCtrl.removeAdmin);
 
 module.exports = router;

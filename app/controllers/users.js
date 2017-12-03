@@ -44,25 +44,12 @@ const usersCreateOne = function (req, res) {
 };
 
 const usersUpdateOne = function (req, res) {
-    const userId = req.params.userId;
     const update = {
         name: req.body.name,
         role: req.body.role
     };
 
-    if(userId) {
-        User
-            .findByIdAndUpdate({"_id": userId}, update)
-            .then(oldUser => {
-                RestHelper.sendJsonResponse(res, 200, oldUser);
-            })
-            .catch(err => {
-                RestHelper.sendJsonResponse(res, 400, err);
-            });
-
-    } else {
-        RestHelper.sendJsonResponse(res, 404, { "message": "No userId" });
-    }
+    User.update(req, res, update);
 };
 
 const usersDeleteOne = function (req, res) {
