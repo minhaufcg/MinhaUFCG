@@ -36,8 +36,7 @@ angular.module('mufcg')
     };
 
     function verifyRequest() {
-        return $scope.request.title && $scope.request.priority && 
-                $scope.request.location && $scope.request.location.lat &&
-                $scope.request.location.lng;
+        return $scope.request.title && $scope.request.location && 
+            $scope.request.location.lat && $scope.request.location.lng;
     }
 });

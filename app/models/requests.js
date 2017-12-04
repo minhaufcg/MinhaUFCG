@@ -18,13 +18,13 @@ const requestSchema = Schema({
     },
     status: {
         type: String,
-        "default": "pending",
+        default: "pending",
         enum: ["pending", "ongoing", "done"]
     },
     priority: {
         type: String,
-        required: true,
-        enum: ["high", "regular", "low"]
+        default: "unset",
+        enum: ["high", "regular", "low", "unset"]
     },
     location: {
         description: String,
@@ -34,7 +34,7 @@ const requestSchema = Schema({
     },
     createdOn: {
         type: Date,
-        "default": Date.now
+        default: Date.now
     },
     img: {
         filesize: Number,
