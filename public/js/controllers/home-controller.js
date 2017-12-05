@@ -7,15 +7,20 @@ angular.module('mufcg')
         NgMap.getMap().then(function (mapResult) {
             map = mapResult;
 
-            mapHelper.initMap(map, AuthService.getCurrentUser());
+            if (!mapHelper.getMap())
+                mapHelper.initMap(map);
+
+            mapHelper.deleteAllMarkers();
+
+            ufcgPolygon = mapHelper.getPolygon(LOCATIONS.UFCG.polygon);
 
             loadAuthorRequests();
         });
     };
 
-    // $scope.dragLimit = function () {
-    //     mapHelper.dragEnd(ufcgPolygon, LOCATIONS.UFCG.center);
-    // };
+    $scope.dragLimit = function () {
+        mapHelper.dragEnd(ufcgPolygon, LOCATIONS.UFCG.center);
+    };
 
     function loadAuthorRequests() {
         Request.getByAuthor(AuthService.getCurrentUser().id).then(function (res) {
