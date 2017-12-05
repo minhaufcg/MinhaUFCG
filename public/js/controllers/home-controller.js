@@ -1,5 +1,5 @@
 angular.module('mufcg')
-.controller('HomeCtrl', function ($scope, NgMap, mapHelper, LOCATIONS, Location, AuthService, Request) {
+.controller('HomeCtrl', function ($scope, NgMap, mapHelper, LOCATIONS, AuthService, Request) {
     var map = undefined;
     var ufcgPolygon = undefined;
 
@@ -24,7 +24,7 @@ angular.module('mufcg')
                 if ('location' in request) {
                     location.lat = request.location.lat;
                     location.lng = request.location.lng;
-                    var image =  undefined;
+                    let image =  undefined;
                     if (request.img) {
                         image = 'data:'.concat(request.img.filetype, ';base64,', request.img.base64);
                     }
