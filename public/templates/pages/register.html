@@ -1,7 +1,7 @@
 <logo></logo>
 <div class="row" style="margin-top: 50px">
     <div class="col-md-5 col-md-offset-3 col-sm-10 col-sm-offset-1">
-        <div class="panel panel-info" style="min-height: 450px;">
+        <div class="panel panel-info" style="min-height: 520px;">
             <div class="div" style="margin: 20px">
                 <form>
                     <div style="margin-bottom: 25px" class="input-group">
@@ -22,7 +22,14 @@
                     </div>
                     <div style="margin-bottom: 25px" class="input-group">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-                        <input type="password" class="form-control input-lg" name="confirme password" placeholder="digite mais uma vez sua senha" ng-model="confirmPassword">
+                        <input type="password" class="form-control input-lg" name="confirm password" placeholder="digite mais uma vez sua senha" ng-model="confirmPassword">
+                    </div>
+                    <div style="margin-bottom: 25px" class="input-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-map-marker"></i></span>
+                        <select class="form-control input-lg"  ng-model="user.campus">
+                            <option value="" disabled selected><span style="color: blue;">selecione o seu campus</span></option>
+                            <option ng-repeat="campus in campi" ng-value="campus._id">{{campus.name}}</option>
+                        </select>
                     </div>
 
                     <div style="float : right" style="bottom: 40px;">

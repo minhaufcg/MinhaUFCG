@@ -26,11 +26,12 @@ const usersReadOne = function (req, res) {
 
 const usersCreateOne = function (req, res) {
     const newUser = new User();
-    newUser.name = req.body.name,
-    newUser.email = req.body.email,
-    newUser.role = req.body.role,
-    newUser.registration = req.body.registration
+    newUser.name = req.body.name;
+    newUser.email = req.body.email;
+    newUser.role = req.body.role;
+    newUser.registration = req.body.registration;
     newUser.setPassword(req.body.password);
+    newUser.campus = req.body.campus;
     
     newUser
         .save()

@@ -1,5 +1,5 @@
 angular.module('mufcg')
-.controller('MapModalCtrl', function ($scope, LOCATIONS, NgMap, messagebox, $uibModalInstance, mapHelper) {
+.controller('MapModalCtrl', function ($scope, NgMap, messagebox, $uibModalInstance, mapHelper, AuthService) {
     var map = undefined;
     var ufcgPolygon = undefined;
 
@@ -7,9 +7,8 @@ angular.module('mufcg')
         map = mapResult;
 
         google.maps.event.trigger(map, "resize");
-        map.setCenter(LOCATIONS.UFCG.center);
+        mapHelper.initMap(map,AuthService.getCurrentUser());
 
-        ufcgPolygon = mapHelper.getPolygon(LOCATIONS.UFCG.polygon);
         mapHelper.deleteAllMarkers();
     });
 
@@ -18,7 +17,7 @@ angular.module('mufcg')
         var lat = event.latLng.lat();
         var lng = event.latLng.lng();
 
-        if (!google.maps.geometry.poly.containsLocation(event.latLng, ufcgPolygon)) {
+        if (!google.maps.geometry.poly.containsLocation(event.latLng, mapHelper.getPolygon())) {
             messagebox.fail('O local que você escolheu para criar a ocorrência fica fora das dependências do seu campus','Local inválido')
         }
         else {
@@ -50,7 +49,7 @@ angular.module('mufcg')
                     lng: position.coords.longitude
                 };
 
-                if (!google.maps.geometry.poly.containsLocation(posFun, ufcgPolygon)) {
+                if (!google.maps.geometry.poly.containsLocation(posFun, mapHelper.getPolygon())) {
                     messagebox.fail("Você não está no campus, não é possível marcar esta localização", "Local inválido");
                 }
                 else {
@@ -72,7 +71,7 @@ angular.module('mufcg')
     };
 
     $scope.dragLimit = function() {
-        mapHelper.dragEnd(ufcgPolygon, LOCATIONS.UFCG.center);
+        mapHelper.dragEnd(mapHelper.getPolygon());
     };
 
     function setMarker(lat, lng, geolocation) {
