@@ -1,56 +1,103 @@
-var mongoose = require('mongoose');
-var User = mongoose.model('User');
+const mongoose = require('mongoose');
+const User = require('../models/users');
+const RestHelper = require('../helpers/rest-helper');
+const passport = require('passport');
 
-var sendJsonResponse = function sendJsonResponse(res, status, content) {
-    res.status(status);
-    res.json(content);
-};
+mongoose.Promise = require('bluebird');
 
-var usersReadOne = function (req, res) {
-    if (req.params && req.params.userId) {
+const usersReadOne = function (req, res) {
+    if (req.params.userId) {
         User
             .findById(req.params.userId)
-            .exec(function (err, user) {
+            .then(user => {
                 if (!user) {
-                    sendJsonResponse(res, 404, { "message": "User not found" });
-                } else if (err) {
-                    sendJsonResponse(res, 404, err);
+                    RestHelper.sendJsonResponse(res, 404, { "message": "User not found" });
                 } else {
-                    sendJsonResponse(res, 200, user);
+                    RestHelper.sendJsonResponse(res, 200, user);
                 }
+            })
+            .catch(err => {
+                RestHelper.sendJsonResponse(res, 404, err);
             });
     } else {
-        sendJsonResponse(res, 404, { "message": "No userId in request" });
+        RestHelper.sendJsonResponse(res, 404, { "message": "No userId in request" });
     }
 };
 
-var usersCreateOne = function (req, res) {
-    var newUser = {
+const usersCreateOne = function (req, res) {
+    const newUser = new User();
+    newUser.name = req.body.name,
+    newUser.email = req.body.email,
+    newUser.role = req.body.role,
+    newUser.registration = req.body.registration
+    newUser.setPassword(req.body.password);
+    
+    newUser
+        .save()
+        .then(user => {
+            const token = newUser.generateJwt();
+            RestHelper.sendJsonResponse(res, 201, {"token": token});
+        })
+        .catch(err => {
+            RestHelper.sendJsonResponse(res, 400, err);
+        });
+};
+
+const usersUpdateOne = function (req, res) {
+    const userId = req.params.userId;
+    const update = {
         name: req.body.name,
-        role: req.body.role,
-        registration: req.body.registration
+        role: req.body.role
     };
-    User.create(newUser, function (err, user) {
-        if (err) {
-            sendJsonResponse(res, 400, err);
+
+    if(userId) {
+        User
+            .findByIdAndUpdate({"_id": userId}, update)
+            .then(oldUser => {
+                RestHelper.sendJsonResponse(res, 200, oldUser);
+            })
+            .catch(err => {
+                RestHelper.sendJsonResponse(res, 400, err);
+            });
+
+    } else {
+        RestHelper.sendJsonResponse(res, 404, { "message": "No userId" });
+    }
+};
+
+const usersDeleteOne = function (req, res) {
+    const userId = req.params.userId;
+    if(userId) {
+        User
+            .findByIdAndRemove(userId)
+            .then(user => {
+                RestHelper.sendJsonResponse(res, 204, null);
+            })
+            .catch(err => {
+                RestHelper.sendJsonResponse(res, 400, err);
+            });
+    } else {
+        RestHelper.sendJsonResponse(res, 200, {"message": "No userId"});
+    }
+};
+
+const login = function (req, res) {
+    passport.authenticate('local', (err, user, info) => {
+        if(err) {
+            RestHelper.sendJsonResponse(res, 404, err);
+        } else if(user) {
+            const token = user.generateJwt();
+            RestHelper.sendJsonResponse(res, 200, {token: token});
         } else {
-            sendJsonResponse(res, 201, user);
+            RestHelper.sendJsonResponse(res, 401, info);
         }
-    });
+    })(req, res);
 };
-
-var usersUpdateOne = function (req, res) {
-    sendJsonResponse(res, 200, {"status": "success"});
-};
-
-var usersDeleteOne = function (req, res) {
-    sendJsonResponse(res, 200, {"status": "success"});
-};
-
 
 module.exports = {
     usersReadOne: usersReadOne,
     usersCreateOne: usersCreateOne,
     usersUpdateOne: usersUpdateOne,
-    usersDeleteOne: usersDeleteOne
+    usersDeleteOne: usersDeleteOne,
+    login: login
 };

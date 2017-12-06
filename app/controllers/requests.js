@@ -1,62 +1,118 @@
-var mongoose = require('mongoose');
-var Request = mongoose.model('Request');
+const mongoose = require('mongoose');
+const Request = require('../models/requests');
+const RestHelper = require('../helpers/rest-helper')
+mongoose.Promise = require('bluebird');
 
-
-var sendJsonResponse = function sendJsonResponse(res, status, content) {
-    res.status(status);
-    res.json(content);
-};
-
-var requestsReadOne = function (req, res) {
+const requestsReadOne = function (req, res) {
     if (req.params && req.params.requestId) {
         Request
             .findById(req.params.requestId)
-            .exec(function (err, request) {
+            .then(request => {
                 if (!request) {
-                    sendJsonResponse(res, 404, {"message": "Request not found"});
-                } else if (err) {
-                    sendJsonResponse(res, 404, err);
+                    RestHelper.sendJsonResponse(res, 404, {"message": "Request not found"});
                 } else {
-                    sendJsonResponse(res, 200, request);
+                    RestHelper.sendJsonResponse(res, 200, request);
                 }
+            })
+            .catch(err => {
+                RestHelper.sendJsonResponse(res, 404, err);
             });
     } else {
-        sendJsonResponse(res, 404, {"message": "No requestId in request"});
+        RestHelper.sendJsonResponse(res, 404, {"message": "No requestId"});
     }
 };
 
-var requestsCollection = function (req, res) {
-    sendJsonResponse(res, 200, {"status": "success"});
+const requestsCollection = function (req, res) {
+    const query = req.query.status? {status: req.query.status} : {};
+    Request
+        .find(query)
+        .then(requests => {
+            RestHelper.sendJsonResponse(res, 200, requests);
+        })
+        .catch(err => {
+            RestHelper.sendJsonResponse(res, 404, err);
+        });
 };
 
-var requestsCreateOne = function (req, res) {
-    var newRequest = {
+const requestsCreateOne = function (req, res) {
+    const newRequest = {
         author: req.body.author,
+        title : req.body.request.title,
+        description: req.body.request.description,
+        priority: req.body.request.priority,
+        location: req.body.request.location,
+        img: req.body.request.img
+    };
+    Request
+        .create(newRequest)
+        .then(request => {
+            RestHelper.sendJsonResponse(res, 201, request);
+        })
+        .catch(err => {
+            RestHelper.sendJsonResponse(res, 400, err);
+        });
+};
+
+const requestsUpdateOne = function (req, res) {
+    // TODO: use json patch 
+    // author: Ruan Eloy 05/11/17
+    const requestId = req.params.requestId;
+    const update = {
         description: req.body.description,
         status: req.body.status,
         priority: req.body.priority,
         coords: req.body.coords
     };
-    Request.create(newRequest, function (err, request) {
-        if (err) {
-            sendJsonResponse(res, 400, err);
-        } else {
-            sendJsonResponse(res, 201, request);
-        }
-    });
+    if(requestId) {
+        Request
+            .findOneAndUpdate({ "_id": requestId }, update)
+            .then(oldRequest => {
+                RestHelper.sendJsonResponse(res, 200, oldRequest);
+            })
+            .catch(err => {
+                RestHelper.sendJsonResponse(res, 400, err);
+            });
+    } else {
+        RestHelper.sendJsonResponse(res, 404, { "message": "No requestId" });
+    }
 };
 
-var requestsUpdateOne = function (req, res) {
-    sendJsonResponse(res, 200, {"status": "success"});
+const requestsDeleteOne = function (req, res) {
+    const requestId = req.params.requestId;
+    if(requestId) {
+        Request
+            .findByIdAndRemove(requestId)
+            .then(request => {
+                RestHelper.sendJsonResponse(res, 204, null);
+            })
+            .catch(err => {
+                RestHelper.sendJsonResponse(res, 404, err);
+            });
+    } else {
+        RestHelper.sendJsonResponse(res, 404, {"message": "No requestId"});
+    }
 };
 
-var requestsDeleteOne = function (req, res) {
-    sendJsonResponse(res, 200, {"status": "success"});
-};
 
+const getByAuthor = function (req, res) {
+    const userId = req.params.userId;
+    if (userId) {
+        console.log(userId);
+        Request.getByAuthor(userId)
+            .then(function (requests) {
+                RestHelper.sendJsonResponse(res,200,requests);
+            })
+            .catch(function (err) {
+                RestHelper.sendJsonResponse(res,404, err);
+            });
+    } else {
+        RestHelper.sendJsonResponse(res, 300, {"message" : "Missing user id"});
+    }
+};
 
 module.exports = {
     requestsReadOne: requestsReadOne,
+    getByAuthor : getByAuthor,
     requestsCollection: requestsCollection,
     requestsCreateOne: requestsCreateOne,
     requestsUpdateOne: requestsUpdateOne,

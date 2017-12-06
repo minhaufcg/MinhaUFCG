@@ -1,0 +1,22 @@
+<link rel="stylesheet" href="/styles/nav-bar.css">
+
+<nav class="navbar navbar-default" ng-if="enabled">
+
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <a class="navbar-brand form-inline" ui-sref="home">
+                <img style="display:inline" src="https://lh3.ggpht.com/A0x3jzuH1qRkE10HcTiT4qQr_6iAqVg-CTsoIqxnoIFyv92V91WI3KqiVlOvLtfoMRg=w300" alt="" height="50px">
+                <span style="font-family: 'Poiret One', cursive;">MinhaUFCG</span>
+            </a>
+        </div>
+
+        <ul class="nav navbar-nav navbar-right">
+            <li ui-sref-active="active" ui-sref="home"><a href="#">Home</a></li>
+            <li ui-sref-active="active" ui-sref="manage"><a href="#">Gerenciar</a></li>
+            <li ui-sref-active="active" ui-sref="create_request"><a href="#">Nova solicitação</a></li>
+            <li ui-sref-active="active" ><a href="#">Histórico</a></li>
+            <li><a ng-click="logout()" ui-sref="login">Logout</a></li>
+        </ul>
+    </div>
+</nav>

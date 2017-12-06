@@ -1,25 +1,26 @@
-<!DOCTYPE html>
 <html lang="pt-br">
+    <head>
+        <meta charset="utf-8">
+        <base href="/" />
+        <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
 
-<head>
-  <title></title>
-  <meta charset="UTF-8">
-  <base href="/">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>MinhaUFCG</title>
+    </head>
+    <body ng-app="mufcg" style="background-image: url(resources/degrade.jpg); background-size: cover">
+        <nav-bar></nav-bar>
+        <div ui-view></div>
 
-  <title>Minha UFCG</title>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCg-DgACUXO_nUZ5W9A5VHe2H0wD-9tycs"></script>
 
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="./lib/bootstrap/dist/css/bootstrap.min.css">
-</head>
+        <script src="/dist/vendors.js"></script>
+        <!-- Angular style sheet -->
+        <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="./node_modules/font-awesome/css/font-awesome.min.css">
+        <link rel="stylesheet" href="./styles/main.css">
+        <link href="https://fonts.googleapis.com/css?family=Poiret+One" rel="stylesheet">
 
-<body ng-app="minhaUFCG">
-
-  <ui-view></ui-view>
-
-  <!-- App Bundle -->
-  <script src="./app.bundle.js"></script>
-
-</body>
+        <script src="/dist/application.js"></script>
+        <script src="/dist/templates.js"></script>
+    </body>
 
 </html>

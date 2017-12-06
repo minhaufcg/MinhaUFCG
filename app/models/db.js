@@ -1,11 +1,11 @@
-var mongoose = require('mongoose');
-var bdURI = 'mongodb://localhost/minhaufcg';
+const mongoose = require('mongoose');
+const constants = require('../config/constants');
 
-mongoose.connect(bdURI, {useMongoClient: true});
+mongoose.connect(constants.database, {useMongoClient: true});
 
 // Listen for Mongoose connection events and output statuses to console
 mongoose.connection.on('connected', function () {
-    console.log('Mongoose connected to ' + bdURI);
+    console.log('Mongoose connected to ' + constants.database);
 });
 
 mongoose.connection.on('error', function (err) {
@@ -17,7 +17,7 @@ mongoose.connection.on('disconnected', function () {
 });
 
 
-var gracefulShutdown = function (msg, callback) {
+const gracefulShutdown = function (msg, callback) {
     mongoose.connection.close(function () {
         console.log('Mongoose disconnected through ' + msg);
         callback();
@@ -51,3 +51,5 @@ process.on('SIGTERM', function () {
 // Models
 require('./requests');
 require('./users');
+require('./coords');
+require('./campi');
