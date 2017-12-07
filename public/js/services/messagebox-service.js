@@ -5,7 +5,7 @@ angular.module('mufcg')
     };
 
     const failModal = function (message, title, callback) {
-        defaultModal(getCustomTitle(title || "Falha de autenticação", 'white', true), message, 'small', getButton('ok', 'OK', 'btn-danger'), false, "danger-modal");
+        defaultModal(getCustomTitle(title || "Erro", 'white', true), message, 'small', getButton('ok', 'OK', 'btn-danger'), false, "danger-modal");
     };
 
     const defaultModal = function (title, message, size, buttons, closeButton, customClass, callback) {

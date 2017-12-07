@@ -1,5 +1,5 @@
 angular.module('mufcg')
-.controller('HomeCtrl', function ($scope, NgMap, mapHelper, LOCATIONS, AuthService, Request) {
+.controller('HomeCtrl', function ($scope, NgMap, mapHelper, LOCATIONS, Location, AuthService, Request) {
     var map = undefined;
     var ufcgPolygon = undefined;
 
@@ -7,20 +7,15 @@ angular.module('mufcg')
         NgMap.getMap().then(function (mapResult) {
             map = mapResult;
 
-            if (!mapHelper.getMap())
-                mapHelper.initMap(map);
-
-            mapHelper.deleteAllMarkers();
-
-            ufcgPolygon = mapHelper.getPolygon(LOCATIONS.UFCG.polygon);
+            mapHelper.initMap(map, AuthService.getCurrentUser());
 
             loadAuthorRequests();
         });
     };
 
-    $scope.dragLimit = function () {
-        mapHelper.dragEnd(ufcgPolygon, LOCATIONS.UFCG.center);
-    };
+    // $scope.dragLimit = function () {
+    //     mapHelper.dragEnd(ufcgPolygon, LOCATIONS.UFCG.center);
+    // };
 
     function loadAuthorRequests() {
         Request.getByAuthor(AuthService.getCurrentUser().id).then(function (res) {
@@ -29,7 +24,7 @@ angular.module('mufcg')
                 if ('location' in request) {
                     location.lat = request.location.lat;
                     location.lng = request.location.lng;
-                    let image =  undefined;
+                    var image =  undefined;
                     if (request.img) {
                         image = 'data:'.concat(request.img.filetype, ';base64,', request.img.base64);
                     }
@@ -38,6 +33,8 @@ angular.module('mufcg')
             });
         });
     }
+
+
 
     function createMarker(title, description, image, date, location) {
         var contentString = `

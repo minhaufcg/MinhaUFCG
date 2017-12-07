@@ -47,7 +47,8 @@ angular
                 return {
                     name: payload.name,
                     registration: payload.registration,
-                    id: payload.id
+                    id: payload.id,
+                    campus: payload.campus
                 };
             }
         };

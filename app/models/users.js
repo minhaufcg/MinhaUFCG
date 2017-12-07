@@ -28,6 +28,11 @@ const userSchema = Schema({
         unique: false,
         required: true
     },
+    campus : {
+        type: Schema.Types.ObjectId,
+        ref : "Campus",
+        required: true
+    },
     hash: String
 });
 
@@ -51,7 +56,8 @@ userSchema.methods.generateJwt = function() {
     const payload = { 
         id: this._id,
         registration: this.registration,
-        name: this.name
+        name: this.name,
+        campus: this.campus
     };
 
     const token = jwt.sign(

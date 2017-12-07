@@ -5,9 +5,9 @@ angular.module('mufcg')
         templateUrl : '/templates/directives/nav-bar/nav-bar.html',
         scope : {},
         controller : function ($scope, $location, AuthService) {
-            $scope.enabled = false;
             $scope.isCollapsed = false;
             const FORBIDDEN = ['/login', '/register', '/'];
+            $scope.enabled = FORBIDDEN.indexOf($location.url()) === -1;
 
             $scope.getCollapseClass = function () {
                 return $scope.isCollapsed ?
