@@ -18,8 +18,13 @@
                             ng-model="request.location.description">
                     </div>
 
-                    <label for="image">Imagem/Foto</label>
-                    <input type="file" id="image" ng-model="request.img" base-sixty-four-input>
+                    <div class="input-group" style="margin-bottom: 25px; width: 10%;">
+                        <span class="input-group-addon">Foto</span>
+                        <label class="btn btn-warning">
+                            <span class="glyphicon glyphicon-camera"></span>
+                            <input type="file" ng-disabled="uploading" ng-model="request.img" name="file" style="display: none;" base-sixty-four-input>
+                        </label>
+                    </div>
 
                     <div class="input-group" style="margin-bottom: 25px; width: 10%;">
                         <span class="input-group-addon">Localização</span>
