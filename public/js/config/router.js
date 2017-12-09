@@ -94,17 +94,40 @@ app.factory('BearerAuthInterceptor', function($injector, $q, $state) {
 });
 
 app.run(function authInterceptor(AuthService, $transitions, $state, $location) {
-    var allowedRoutes = {
-        login: true,
-        register: true
+    var redirectState = 'login';
+    var noAuthRoutes = {
+        'login': true,
+        'register': true
+    };
+    var adminRoutes = {
+        'manage': true,
+        'manage.requests': true,
+        'manage.maps': true,
+        'manage.admins': true
     };
     $transitions.onStart({
         to: function(state) {
-            return !allowedRoutes[state.name] && !AuthService.isLoggedIn();
+            var authNeeded = false;
+            var notAuthorized = false;
+            var isAdmin = AuthService.isAdmin();
+
+            if(AuthService.isLoggedIn()) {
+                var isAdminRoute = adminRoutes[state.name];
+
+                if(isAdminRoute) {
+                    redirectState = 'home';
+                    notAuthorized = !isAdmin;
+                }
+            } else {
+                var forbiddenRoute = !noAuthRoutes[state.name];
+                authNeeded = forbiddenRoute;
+            }
+
+            return authNeeded || notAuthorized;
         }
-    }, function(transition) {
-        $state.go("login", {
-            "redirect": $location.path()
+    }, function notAllowed(transition) {
+        $state.go(redirectState, {
+            redirect: $location.path()
         });
     });
 });
