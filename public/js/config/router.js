@@ -30,6 +30,13 @@ app.config(function ($stateProvider, $urlRouterProvider, $locationProvider, $htt
         controller : 'CreateRequestCtrl'
     };
 
+    const editRequest = {
+        name : 'edit_request',
+        url : '/request/edit/:id',
+        templateUrl : '/templates/pages/edit-request.html',
+        controller : 'EditRequestCtrl'
+    };
+
     const manage = {
         name: 'manage',
         url: '/manage',
@@ -40,7 +47,8 @@ app.config(function ($stateProvider, $urlRouterProvider, $locationProvider, $htt
 
     const manageRequests = {
         name: 'manage.requests',
-        templateUrl: "/templates/pages/manage-requests.html"
+        templateUrl: "/templates/pages/manage-requests.html",
+        controller: 'ReqTableCtrl'
     }
 
     const manageMaps = {
@@ -57,6 +65,7 @@ app.config(function ($stateProvider, $urlRouterProvider, $locationProvider, $htt
         .state(login)
         .state(register)
         .state(createRequest)
+        .state(editRequest)
         .state(home)
         .state(manage)
         .state(manageRequests)
