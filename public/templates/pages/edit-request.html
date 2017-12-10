@@ -3,7 +3,7 @@
         <div class="panel panel-info" style="min-height: 550px;">
             <div class="div" style="margin: 20px">
                 <form action="">
-                    <h3 class="col-xs-offset-4" style="margin-bottom: 30px">Criar solicitação</h3>
+                    <h3 class="col-xs-offset-4" style="margin-bottom: 30px">Editar solicitação</h3>
                     <div style="margin-bottom: 25px;" class="input-group">
                         <span class="input-group-addon">Título</span>
                         <input focus-on-show class="form-control input-lg" name="Título" value="" placeholder="título" ng-model="request.title">
@@ -17,7 +17,12 @@
                         <input focus-on-show class="form-control input-lg" name="Descrição do local" value="" placeholder="descrição da localização"
                             ng-model="request.location.description">
                     </div>
-
+                    <div ng-if="request.img">
+                        <img src="data:{{request.img.filetype}};base64,{{request.img.base64}}" style="height: 100px; width : auto" alt=""><br>
+                    </div>
+                    <div ng-if="!request.img">
+                        <p>Nenhuma foto foi adicionada a solicitação.</p>
+                    </div>
                     <div class="input-group" style="margin-bottom: 25px; width: 10%;">
                         <span class="input-group-addon">Foto</span>
                         <label class="btn btn-warning">
@@ -29,13 +34,13 @@
                     <div class="input-group" style="margin-bottom: 25px; width: 10%;">
                         <span class="input-group-addon">Localização</span>
                         <span class="input-group-btn">
-                        <a class="btn btn-info btn-lg" ng-click="pop()"><i class="fa fa-map-marker" aria-hidden="true"></i></a>
+                        <a class="btn btn-info btn-lg" ng-click="getLocation()"><i class="fa fa-map-marker" aria-hidden="true"></i></a>
                       </span>
                     </div>
 
                     <div style="float : right" style="bottom: 40px;">
                         <a class="btn btn-primary btn-lg" style="margin-right: 10px" ui-sref="home" href="#">Voltar</a>
-                        <a class="btn btn-success btn-lg" ng-click="create()">Cadastrar</a>
+                        <a class="btn btn-success btn-lg" ng-click="save()">Salvar</a>
                     </div>
                 </form>
             </div>

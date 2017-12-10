@@ -7,20 +7,15 @@ angular.module('mufcg')
         NgMap.getMap().then(function (mapResult) {
             map = mapResult;
 
-            if (!mapHelper.getMap())
-                mapHelper.initMap(map);
-
-            mapHelper.deleteAllMarkers();
-
-            ufcgPolygon = mapHelper.getPolygon(LOCATIONS.UFCG.polygon);
+            mapHelper.initMap(map, AuthService.getCurrentUser());
 
             loadAuthorRequests();
         });
     };
 
-    $scope.dragLimit = function () {
-        mapHelper.dragEnd(ufcgPolygon, LOCATIONS.UFCG.center);
-    };
+    // $scope.dragLimit = function () {
+    //     mapHelper.dragEnd(ufcgPolygon, LOCATIONS.UFCG.center);
+    // };
 
     function loadAuthorRequests() {
         Request.getByAuthor(AuthService.getCurrentUser().id).then(function (res) {
@@ -45,7 +40,7 @@ angular.module('mufcg')
         var contentString = `
                 <h1>${title}</h1>
                 <p>${description}</p>
-                <img src="${image}" style="height: 100px; width : auto" alt=""><br>'
+                <img src="${image}" style="height: 100px; width : auto" alt=""><br>
                 <p>${date}</p>`;
 
         var infowindow = new google.maps.InfoWindow({
