@@ -44,10 +44,13 @@ const usersCreateOne = function (req, res) {
 };
 
 const usersUpdateOne = function (req, res) {
-    const update = {
-        name: req.body.name,
-        role: req.body.role
-    };
+    const properties = ['name', 'role'];
+    const update = {};
+    for(prop of properties) {
+        if(req.body[prop]) {
+            update[prop] = req.body[prop];
+        }
+    }
 
     User.update(req, res, update);
 };
@@ -73,12 +76,24 @@ const login = function (req, res) {
         if(err) {
             RestHelper.sendJsonResponse(res, 404, err);
         } else if(user) {
-            const token = user.generateJwt();
-            RestHelper.sendJsonResponse(res, 200, {token: token});
+            req.login(user, function (err){
+                if(err) { 
+                    RestHelper.sendJsonResponse(res, 404, err);
+                }
+                req.session.save(() => {
+                    const token = user.generateJwt();
+                    RestHelper.sendJsonResponse(res, 200, {token: token});
+                })
+            });
         } else {
             RestHelper.sendJsonResponse(res, 401, info);
         }
     })(req, res);
+};
+
+const logout = function (req, res) {
+    req.logout();
+    RestHelper.sendJsonResponse(res, 200, null);
 };
 
 module.exports = {
@@ -86,5 +101,6 @@ module.exports = {
     usersCreateOne: usersCreateOne,
     usersUpdateOne: usersUpdateOne,
     usersDeleteOne: usersDeleteOne,
-    login: login
+    login: login,
+    logout: logout
 };

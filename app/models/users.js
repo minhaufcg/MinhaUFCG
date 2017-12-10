@@ -57,6 +57,7 @@ userSchema.methods.generateJwt = function() {
         id: this._id,
         registration: this.registration,
         name: this.name,
+        role: this.role,
         isAdmin: this.isAdmin
     };
 
@@ -90,7 +91,6 @@ userSchema.statics.update = function (req, res, update) {
             .catch(err => {
                 RestHelper.sendJsonResponse(res, 400, err);
             });
-
     } else {
         RestHelper.sendJsonResponse(res, 404, { "message": "No userId" });
     }

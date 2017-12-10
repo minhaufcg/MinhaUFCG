@@ -13,7 +13,6 @@ const removeAdmin = function (req, res) {
     User.update(req, res, { isAdmin: false }); 
 };
 
-
 module.exports = {
     addAdmin: addAdmin,
     removeAdmin: removeAdmin
