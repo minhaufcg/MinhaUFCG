@@ -6,6 +6,7 @@ const constants = require('../config/constants')
 const requestsCtrl = require('../controllers/requests');
 const usersCtrl = require('../controllers/users');
 const adminsCtrl = require('../controllers/admins');
+const locationsCtrl = require('../controllers/locations');
 
 const router = express.Router();
 const auth = jwt({
@@ -29,5 +30,8 @@ router.get('/logout/', usersCtrl.logout);
 
 router.post('/admins/:userId', userRole.can('access admin route'), auth, adminsCtrl.addAdmin);
 router.delete('/admins/:userId', userRole.can('access admin route'), auth, adminsCtrl.removeAdmin);
+
+router.get('/campi/', locationsCtrl.getAllCampi);
+router.get('/campi/:campusId/coords', locationsCtrl.getCampusCoords);
 
 module.exports = router;

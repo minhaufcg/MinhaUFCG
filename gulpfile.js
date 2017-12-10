@@ -16,7 +16,7 @@ gulp.task('angular', () => {
       presets: ['es2015'],
       plugins: ['angularjs-annotate']
     }))
-    .pipe(uglify())
+    //.pipe(uglify())
     .pipe(gulp.dest('public/dist'));
 });
 

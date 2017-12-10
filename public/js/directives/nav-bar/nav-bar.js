@@ -7,9 +7,9 @@ angular.module('mufcg')
         controller : function ($scope, $location, AuthService) {
             const FORBIDDEN = ['/login', '/register', '/'];
             
-            $scope.enabled = false;
             $scope.isCollapsed = false;
             $scope.isAdmin = false;
+            $scope.enabled = FORBIDDEN.indexOf($location.url()) === -1;
 
             $scope.getCollapseClass = function () {
                 return $scope.isCollapsed ?

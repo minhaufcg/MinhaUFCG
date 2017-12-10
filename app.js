@@ -15,8 +15,8 @@ const routesAPI = require('./app/routers/index');
 const app = express();
 
 app.use(morgan('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.json({ limit: '1mb' }));
+app.use(bodyParser.urlencoded({ limit: '1mb', extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
     secret: 'minhaufcg',

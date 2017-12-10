@@ -33,6 +33,11 @@ const userSchema = Schema({
         type: Boolean,
         default: false
     },
+    campus : {
+        type: Schema.Types.ObjectId,
+        ref : "Campus",
+        required: true
+    },
     hash: String
 });
 
@@ -58,7 +63,8 @@ userSchema.methods.generateJwt = function() {
         registration: this.registration,
         name: this.name,
         role: this.role,
-        isAdmin: this.isAdmin
+        isAdmin: this.isAdmin,
+        campus: this.campus
     };
 
     const token = jwt.sign(

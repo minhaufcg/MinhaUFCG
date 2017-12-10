@@ -45,7 +45,8 @@ angular
                     name: payload.name,
                     registration: payload.registration,
                     id: payload.id,
-                    isAdmin: payload.isAdmin
+                    isAdmin: payload.isAdmin,
+                    campus: payload.campus
                 };
             } 
             return user;

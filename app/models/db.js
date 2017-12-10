@@ -51,3 +51,5 @@ process.on('SIGTERM', function () {
 // Models
 require('./requests');
 require('./users');
+require('./coords');
+require('./campi');

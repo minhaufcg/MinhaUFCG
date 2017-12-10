@@ -36,8 +36,9 @@ angular.module('mufcg')
     };
 
     function verifyRequest() {
-        return $scope.request.title && $scope.request.priority && 
-                $scope.request.location && $scope.request.location.lat &&
-                $scope.request.location.lng;
+        let fileSizeLimit = 1048576; // 1MB
+        let imageValid = ($scope.request.img) ? $scope.request.img.filesize <= fileSizeLimit: true;
+        return $scope.request.title && $scope.request.location && 
+            $scope.request.location.lat && $scope.request.location.lng;
     }
 });
