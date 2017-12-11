@@ -18,4 +18,22 @@ angular.module('mufcg')
       });
     };
 
+    $scope.showPending = function() {
+      $scope.toggle = true;
+    };
+
+    $scope.showResolved = function() {
+      if(!$scope.allResolvedReq) {
+        Request.getAllResolved().then(() =>{
+          $window.localStorage.setItem('requests-resolved', JSON.stringify(res.data));
+          $scope.allResolvedReq = req.data;          
+        });
+      }
+      $scope.toggle = false;     
+    };
+
+    $scope.isPending = function(request) {
+      return request.status === 'pending';
+    };
+
   });

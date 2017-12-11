@@ -15,6 +15,10 @@ angular.module("mufcg").factory('Request', function RequestFactory($http, PROPER
 
         getByAuthor : function (userId) {
             return $http.get(PROPERTIES.restBasePath + "/user/" + userId + "/requests/");
-        }
+        },
+
+        getAllResolved : function() {
+            return $http.get(PROPERTIES.restBasePath.concat('/requests', '?status=pending'));
+        } 
     }
 });
