@@ -40,7 +40,7 @@ angular.module('mufcg')
         var contentString = `
                 <h1>${title}</h1>
                 <p>${description}</p>
-                <img src="${image}" style="height: 100px; width : auto" alt=""><br>'
+                <img src="${image}" style="height: 100px; width : auto" alt=""><br>
                 <p>${date}</p>`;
 
         var infowindow = new google.maps.InfoWindow({
