@@ -2,7 +2,6 @@
 angular
     .module('mufcg')
     .service('AuthService', function AuthService($q, $http, $window) {
-        var currentUser = undefined;
 
         var saveToken = function (token) {
             $window.localStorage['token'] = token;
@@ -30,27 +29,27 @@ angular
         };
 
         var isLoggedIn = function () {
-            var token = getToken();
             var payload = getPayload();
-
             if(payload) {
                 var isNotExpired = payload.exp > Date.now() / 1000;
                 return isNotExpired;
-            } else {
-                return false;
             }
+            return false;
         };
         
         var getCurrentUser = function () {
+            var user;
             if(isLoggedIn()) {
                 var payload = getPayload();
-                return {
+                user = {
                     name: payload.name,
                     registration: payload.registration,
                     id: payload.id,
+                    isAdmin: payload.isAdmin,
                     campus: payload.campus
                 };
-            }
+            } 
+            return user;
         };
 
         var register = function (user) {
@@ -58,12 +57,17 @@ angular
 
             $http.post('/api/users', user).then(function success(response) {
                 saveToken(response.data.token);
-                deferred.resolve()
+                deferred.resolve();
             }, function error(response) {
                 deferred.reject(response);                
             });
 
             return deferred.promise;
+        };
+
+        var isAdmin = function () {
+            var user = getCurrentUser();
+            return user && user.isAdmin;
         };
 
         function getPayload() {
@@ -75,7 +79,6 @@ angular
                 payload = $window.atob(payload);
                 payload = JSON.parse(payload);
             }
-
             return payload;
         }
 
@@ -86,6 +89,7 @@ angular
             login: login,
             isLoggedIn: isLoggedIn,
             register: register,
-            getCurrentUser: getCurrentUser
+            getCurrentUser: getCurrentUser,
+            isAdmin: isAdmin
         };
 });

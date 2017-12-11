@@ -5,8 +5,10 @@ angular.module('mufcg')
         templateUrl : '/templates/directives/nav-bar/nav-bar.html',
         scope : {},
         controller : function ($scope, $location, AuthService) {
-            $scope.isCollapsed = false;
             const FORBIDDEN = ['/login', '/register', '/'];
+            
+            $scope.isCollapsed = false;
+            $scope.isAdmin = false;
             $scope.enabled = FORBIDDEN.indexOf($location.url()) === -1;
 
             $scope.getCollapseClass = function () {
@@ -19,11 +21,16 @@ angular.module('mufcg')
             };
 
             $scope.$on('$locationChangeSuccess', function(event){
-                $scope.enabled = $location.url() && FORBIDDEN.indexOf($location.url()) === -1;
+                $scope.enabled = $location.url() && FORBIDDEN.indexOf($location.url()) === -1;           
             });
 
             $scope.logout = function () {
                 AuthService.logout();
+            };
+
+            $scope.isAdmin = function () {
+                var currentUser = AuthService.getCurrentUser();
+                return currentUser && currentUser.isAdmin;
             };
         }
     }

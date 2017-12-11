@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const constants = require('../config/constants');
+const RestHelper = require('../helpers/rest-helper');
 
 mongoose.Promise = require('bluebird');
 
@@ -27,6 +28,10 @@ const userSchema = Schema({
         type: String,
         unique: false,
         required: true
+    },
+    isAdmin: {
+        type: Boolean,
+        default: false
     },
     campus : {
         type: Schema.Types.ObjectId,
@@ -57,6 +62,8 @@ userSchema.methods.generateJwt = function() {
         id: this._id,
         registration: this.registration,
         name: this.name,
+        role: this.role,
+        isAdmin: this.isAdmin,
         campus: this.campus
     };
 
@@ -77,6 +84,22 @@ userSchema.statics.getByRegistration = function(registration) {
     .catch(err => {
         return null;
     });
+};
+
+userSchema.statics.update = function (req, res, update) {
+    const userId = req.params.userId;
+    
+    if(userId) {
+        this.findByIdAndUpdate({ "_id": userId }, update)
+            .then(oldUser => {
+                RestHelper.sendJsonResponse(res, 200, oldUser);
+            })
+            .catch(err => {
+                RestHelper.sendJsonResponse(res, 400, err);
+            });
+    } else {
+        RestHelper.sendJsonResponse(res, 404, { "message": "No userId" });
+    }
 };
 
 module.exports = mongoose.model("User", userSchema);
