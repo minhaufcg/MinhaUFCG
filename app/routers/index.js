@@ -28,8 +28,12 @@ router.delete('/users/:userId', auth, usersCtrl.usersDeleteOne);
 router.post('/login/', usersCtrl.login);
 router.get('/logout/', usersCtrl.logout);
 
-router.post('/admins/:userId', userRole.can('access admin route'), auth, adminsCtrl.addAdmin);
-router.delete('/admins/:userId', userRole.can('access admin route'), auth, adminsCtrl.removeAdmin);
+
+router.get('/admins/users/:registration', auth, userRole.can('access admin route'), adminsCtrl.getUserByRegistration);
+router.post('/admins/:userId', auth, userRole.can('access admin route'), adminsCtrl.addAdmin);
+router.delete('/admins/:userId', auth, userRole.can('access admin route'), adminsCtrl.removeAdmin);
+
+router.post('/admins/free/:userId', auth, adminsCtrl.addAdmin);
 
 router.get('/campi/', locationsCtrl.getAllCampi);
 router.get('/campi/:campusId/coords', locationsCtrl.getCampusCoords);

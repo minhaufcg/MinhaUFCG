@@ -4,12 +4,10 @@ angular.module('mufcg')
         restrict : "AE",
         templateUrl : '/templates/directives/nav-bar/nav-bar.html',
         scope : {},
-        controller : function ($scope, $location, AuthService) {
-            const FORBIDDEN = ['/login', '/register', '/'];
-            
+        controller : function ($scope, $location, AuthService, $state) {
             $scope.isCollapsed = false;
             $scope.isAdmin = false;
-            $scope.enabled = FORBIDDEN.indexOf($location.url()) === -1;
+            $scope.enabled = locationIsAllowed();
 
             $scope.getCollapseClass = function () {
                 return $scope.isCollapsed ?
@@ -21,17 +19,27 @@ angular.module('mufcg')
             };
 
             $scope.$on('$locationChangeSuccess', function(event){
-                $scope.enabled = $location.url() && FORBIDDEN.indexOf($location.url()) === -1;           
+                $scope.enabled = $location.url() && locationIsAllowed();           
             });
 
             $scope.logout = function () {
-                AuthService.logout();
+                AuthService.logout().then(function success() {
+                    $state.go('login');
+                }, function error(response) {
+                    //TODO: deal with errors
+                    console.log(response.message);
+                })
             };
 
             $scope.isAdmin = function () {
                 var currentUser = AuthService.getCurrentUser();
                 return currentUser && currentUser.isAdmin;
             };
+
+            function locationIsAllowed() {
+                const FORBIDDEN = ['/login', '/register', '/'];
+                return FORBIDDEN.indexOf($location.url()) === -1;
+            }
         }
     }
 });

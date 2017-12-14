@@ -1,4 +1,28 @@
-<div>
-
-    <h1>Admins</h1>
+<div class="container col-md-6 col-md-offset-3">
+    <div class="row ">
+        <div class="input-group" >
+            <input type="text" class="form-control" placeholder="Matrícula do usuário" ng-model="userId">
+            <span class="input-group-btn">
+                <button class="btn btn-default" type="button" ng-click="search()">
+                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span> Buscar
+                </button>
+            </span>
+        </div>           
+    </div>
+    <div class="row" style="margin-top: 2em">
+        <div class="jumbotron">
+            <center>
+                <div ng-if="searchedUser">
+                    <h4>Nome: {{searchedUser.name}}</h4>
+                    <h4>Matrícula: {{searchedUser.registration}}</h4>
+                    <h4>Campus: {{searchedUser.campus}}</h4>
+                    <h4>Papel: {{searchedUser.role}}</h4>
+                    <h4>Administrador: {{searchedUser.isAdmin ? 'Sim' : 'Não'}}</h4>
+                </div>
+                <div ng-if="!searchedUser">
+                    <h2>Pesquise por um usuário</h2>
+                </div>
+            </center>
+        </div>
+    </div>
 </div>

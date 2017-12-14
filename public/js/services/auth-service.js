@@ -12,19 +12,24 @@ angular
         };
 
         var logout = function () {
-            $window.localStorage.removeItem('token');
+            var deferred = $q.defer();
+            $http.get('/api/logout').then(function success() {
+                $window.localStorage.removeItem('token');
+                deferred.resolve();
+            }, function error(response) {
+                deferred.reject(response);
+            });
+            return deferred.promise;
         };
 
         var login = function (user) {
             var deferred = $q.defer();
-
             $http.post('/api/login', user).then(function success(response) {
                 saveToken(response.data.token);
                 deferred.resolve(response);
             }, function error(response) {
                 deferred.reject(response);
             });
-
             return deferred.promise;
         };
 

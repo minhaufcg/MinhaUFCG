@@ -100,7 +100,6 @@ const requestsDeleteOne = function (req, res) {
 const getByAuthor = function (req, res) {
     const userId = req.params.userId;
     if (userId) {
-        console.log(userId);
         Request.getByAuthor(userId)
             .then(function (requests) {
                 RestHelper.sendJsonResponse(res,200,requests);

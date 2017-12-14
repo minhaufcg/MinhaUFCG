@@ -58,15 +58,7 @@ userSchema.methods.generateJwt = function() {
     const expiry = new Date();
     expiry.setDate(expiry.getDate() + NUMBER_OF_DAYS);
     
-    const payload = { 
-        id: this._id,
-        registration: this.registration,
-        name: this.name,
-        role: this.role,
-        isAdmin: this.isAdmin,
-        campus: this.campus
-    };
-
+    const payload = getSimpleUser(this);
     const token = jwt.sign(
         payload, 
         secret,
@@ -76,14 +68,22 @@ userSchema.methods.generateJwt = function() {
     return token;
 };
 
-userSchema.statics.getByRegistration = function(registration) {
-    this.find({registration : registration})
-    .then(user => {
-        return user;
-    })
-    .catch(err => {
-        return null;
-    });
+userSchema.statics.getByRegistration = function(req, res, registration) {
+    if(registration) {
+        this.findOne({registration : registration})
+        .then(user => {
+            if (!user) {
+                RestHelper.sendJsonResponse(res, 404, { "message": "User not found" });
+            } else {
+                RestHelper.sendJsonResponse(res, 200, getSimpleUser(user));
+            }
+        })
+        .catch(err => {
+            RestHelper.sendJsonResponse(res, 404, err);
+        });
+    } else {
+        RestHelper.sendJsonResponse(res, 404, { "message": "No user registration found in request" });
+    }
 };
 
 userSchema.statics.update = function (req, res, update) {
@@ -101,5 +101,16 @@ userSchema.statics.update = function (req, res, update) {
         RestHelper.sendJsonResponse(res, 404, { "message": "No userId" });
     }
 };
+
+function getSimpleUser(user) {
+    return { 
+        id: user._id,
+        registration: user.registration,
+        name: user.name,
+        role: user.role,
+        isAdmin: user.isAdmin,
+        campus: user.campus
+    };
+}
 
 module.exports = mongoose.model("User", userSchema);

@@ -13,7 +13,12 @@ const removeAdmin = function (req, res) {
     User.update(req, res, { isAdmin: false }); 
 };
 
+const getUserByRegistration = function (req, res) {
+    User.getByRegistration(req, res, req.params.registration);
+};
+
 module.exports = {
     addAdmin: addAdmin,
-    removeAdmin: removeAdmin
+    removeAdmin: removeAdmin,
+    getUserByRegistration: getUserByRegistration
 };

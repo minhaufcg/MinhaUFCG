@@ -58,7 +58,8 @@ app.config(function ($stateProvider, $urlRouterProvider, $locationProvider, $htt
 
     const manageAdmins = {
         name: 'manage.admins',
-        templateUrl: "/templates/pages/manage-admins.html"
+        templateUrl: "/templates/pages/manage-admins.html",
+        controller: "ManageAdminCtrl"
     }
 
     $stateProvider

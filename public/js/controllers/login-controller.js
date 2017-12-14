@@ -9,7 +9,7 @@ angular.module('mufcg')
         AuthService.login(credentials).then(function success(response) {
             $state.go("home");
         }, function error(response) {
-            messagebox.fail("Matrícula ou senha incorretos");
+            messagebox.fail("Matrícula ou senha incorretas");
         });
     };
 });

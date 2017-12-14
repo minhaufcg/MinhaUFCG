@@ -7,7 +7,6 @@ mongoose.Promise = require('bluebird');
 function getAllCampi (req, res) {
     Campus
         .find({}).then(function (data) {
-            console.log(data);
             RestHelper.sendJsonResponse(res, 200, data);
         })
 }

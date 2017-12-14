@@ -18,10 +18,15 @@ app.use(morgan('dev'));
 app.use(bodyParser.json({ limit: '1mb' }));
 app.use(bodyParser.urlencoded({ limit: '1mb', extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
+
+var expiryDate = new Date( Date.now() + 60 * 60 * 1000 ); // 1 hour
 app.use(session({
     secret: 'minhaufcg',
     resave: false,
-    saveUninitialized: true
+    saveUninitialized: false,
+    cookie: {
+        expires: expiryDate
+    }
 }));
 app.use(passport.initialize());
 app.use(passport.session());
