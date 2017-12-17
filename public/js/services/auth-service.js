@@ -49,7 +49,7 @@ angular
                 user = {
                     name: payload.name,
                     registration: payload.registration,
-                    id: payload.id,
+                    id: payload._id,
                     isAdmin: payload.isAdmin,
                     campus: payload.campus
                 };

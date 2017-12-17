@@ -1,7 +1,7 @@
 <div class="container col-md-6 col-md-offset-3">
     <div class="row ">
-        <div class="input-group" >
-            <input type="text" class="form-control" placeholder="Matrícula do usuário" ng-model="userId">
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="Matrícula do usuário" ng-model="registration">
             <span class="input-group-btn">
                 <button class="btn btn-default" type="button" ng-click="search()">
                     <span class="glyphicon glyphicon-search" aria-hidden="true"></span> Buscar
@@ -11,18 +11,32 @@
     </div>
     <div class="row" style="margin-top: 2em">
         <div class="jumbotron">
-            <center>
-                <div ng-if="searchedUser">
-                    <h4>Nome: {{searchedUser.name}}</h4>
-                    <h4>Matrícula: {{searchedUser.registration}}</h4>
-                    <h4>Campus: {{searchedUser.campus}}</h4>
-                    <h4>Papel: {{searchedUser.role}}</h4>
-                    <h4>Administrador: {{searchedUser.isAdmin ? 'Sim' : 'Não'}}</h4>
+            <div ng-show="user">
+                <div class="row">
+                    <h3>Dados do Usuário:</h3>
+                    <h4>Nome: {{user.name}}</h4>
+                    <h4>Matrícula: {{user.registration}}</h4>
+                    <h4>Campus: {{user.campus}}</h4>
+                    <h4>Cargo: {{user.role}}</h4>
                 </div>
-                <div ng-if="!searchedUser">
-                    <h2>Pesquise por um usuário</h2>
-                </div>
-            </center>
+                <center class="row" style="margin-top: 1em">
+                    <div ng-if="!user.isAdmin">
+                        <h4>Este usuário não é um administrador. Deseja torná-lo um?</h4>
+                        <a class="btn btn-primary" href="#" role="button" ng-click="addAdmin()">
+                            Adicionar Administrador
+                        </a>
+                    </div>
+                    <div ng-if="user.isAdmin">
+                        <h4>Este usuário já é um administrador. Deseja remover este privilégio?</h4>
+                        <a class="btn btn-danger" href="#" role="button" ng-click="removeAdmin()">
+                            Remover Administrador
+                        </a>
+                    </div>
+                </center>
+            </div>
+            <div ng-hide="user">
+                <h2>Pesquise por um usuário</h2>
+            </div>
         </div>
     </div>
 </div>

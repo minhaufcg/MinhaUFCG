@@ -1,7 +1,15 @@
 angular.module("mufcg").factory('User', function UserFactory($http, PROPERTIES) {
     return {
         getByRegistration: function (registration) {
-            return $http.get('/api/admins/users/' + registration);
+            return $http.get('/api/admins/' + registration);
+        },
+
+        addAdmin: function (registration) {
+            return $http.post('/api/admins/' + registration);
+        },
+    
+        removeAdmin: function (registration) {
+            return $http.delete('/api/admins/' + registration);
         }
     }
 });

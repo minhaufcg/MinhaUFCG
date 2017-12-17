@@ -29,11 +29,9 @@ router.post('/login/', usersCtrl.login);
 router.get('/logout/', usersCtrl.logout);
 
 
-router.get('/admins/users/:registration', auth, userRole.can('access admin route'), adminsCtrl.getUserByRegistration);
-router.post('/admins/:userId', auth, userRole.can('access admin route'), adminsCtrl.addAdmin);
-router.delete('/admins/:userId', auth, userRole.can('access admin route'), adminsCtrl.removeAdmin);
-
-router.post('/admins/free/:userId', auth, adminsCtrl.addAdmin);
+router.get('/admins/:registration', auth, userRole.can('access admin route'), adminsCtrl.getUserByRegistration);
+router.post('/admins/:registration', auth, userRole.can('access admin route'), adminsCtrl.addAdmin);
+router.delete('/admins/:registration', auth, userRole.can('access admin route'), adminsCtrl.removeAdmin);
 
 router.get('/campi/', locationsCtrl.getAllCampi);
 router.get('/campi/:campusId/coords', locationsCtrl.getCampusCoords);

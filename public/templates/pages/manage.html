@@ -6,8 +6,8 @@
         <li role="presentation" ui-sref="manage.maps" ui-sref-active="active">
             <a href="#">Mapa</a>
         </li>
-        <li role="presentation" ui-sref="manage.admins" ui-sref-active="active">
-            <a href="#">Adicionar Administrador</a>
+        <li role="presentation" ui-sref="manage.admins" ui-sref-active="active" ng-if="isAdmin()">
+            <a href="#">Administradores</a>
         </li>
     </ul>
 

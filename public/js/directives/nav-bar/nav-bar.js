@@ -6,7 +6,6 @@ angular.module('mufcg')
         scope : {},
         controller : function ($scope, $location, AuthService, $state) {
             $scope.isCollapsed = false;
-            $scope.isAdmin = false;
             $scope.enabled = locationIsAllowed();
 
             $scope.getCollapseClass = function () {
@@ -29,11 +28,6 @@ angular.module('mufcg')
                     //TODO: deal with errors
                     console.log(response.message);
                 })
-            };
-
-            $scope.isAdmin = function () {
-                var currentUser = AuthService.getCurrentUser();
-                return currentUser && currentUser.isAdmin;
             };
 
             function locationIsAllowed() {

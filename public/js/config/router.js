@@ -110,9 +110,6 @@ app.run(function authInterceptor(AuthService, $transitions, $state, $location) {
         'register': true
     };
     var adminRoutes = {
-        'manage': true,
-        'manage.requests': true,
-        'manage.maps': true,
         'manage.admins': true
     };
     $transitions.onStart({
