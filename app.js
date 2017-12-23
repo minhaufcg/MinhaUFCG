@@ -5,6 +5,7 @@ const morgan = require('morgan');
 const session = require('express-session');
 const passport = require('./app/config/passport');
 const RestHelper = require('./app/helpers/rest-helper');
+const timeHelper = require('./app/helpers/time-helper');
 const userRole = require('./app/config/connect-roles');
 
 require('./app/models/db');
@@ -19,7 +20,7 @@ app.use(bodyParser.json({ limit: '1mb' }));
 app.use(bodyParser.urlencoded({ limit: '1mb', extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-var expiryDate = new Date( Date.now() + 60 * 60 * 1000 ); // 1 hour
+const expiryDate = timeHelper.getExpiryDate();
 app.use(session({
     secret: 'minhaufcg',
     resave: false,
