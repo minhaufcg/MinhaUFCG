@@ -56,6 +56,12 @@ app.config(function ($stateProvider, $urlRouterProvider, $locationProvider, $htt
         templateUrl: "/templates/pages/manage-admins.html"
     }
 
+    const manageAllRequests = {
+        name: 'manage.all_request',
+        templateUrl: '/templates/pages/manage-all-requests.html',
+        controller: 'AllReqTableCtrl'
+    };
+
     $stateProvider
         .state(login)
         .state(register)
@@ -65,6 +71,7 @@ app.config(function ($stateProvider, $urlRouterProvider, $locationProvider, $htt
         .state(manage)
         .state(manageRequests)
         .state(manageAdmins)
+        .state(manageAllRequests)
 
     $urlRouterProvider.otherwise("/");
 

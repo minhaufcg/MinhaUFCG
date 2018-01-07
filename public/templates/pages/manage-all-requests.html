@@ -1,0 +1,24 @@
+<table class="table" style="margin-top: 10px;">
+  <thead>
+    <tr>
+      <th scope="col">Imagem</th>
+      <th scope="col">Titulo</th>
+      <th scope="col">Descrição</th>
+      <th scope="col">Localização</th>
+      <th scope="col">Status</th>
+      <th scope="col">Prioridade</th>
+      <th scope="col">Autor</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="req in requests track by $index">
+      <td><button>img</button></td>
+      <td>{{req.title}}</td>
+      <td>{{req.description}}</td>
+      <td><button>location</button></td>
+      <td>{{req.status}}</td>
+      <td>{{req.priority}}</td>
+      <td>{{req.author}}</td>
+    </tr>
+  </tbody>
+</table>

@@ -1,10 +1,13 @@
 <div>
     <ul class="nav nav-tabs nav-justified">
-        <li role="presentation" ui-sref="manage.requests" ui-sref-active="active">
+        <li ng-if="!isAdmin()" role="presentation" ui-sref="manage.requests" ui-sref-active="active">
             <a href="#">Solicitações</a>
         </li>
-        <li role="presentation" ui-sref="manage.admins" ui-sref-active="active">
+        <li ng-if="isAdmin()" role="presentation" ui-sref="manage.admins" ui-sref-active="active">
             <a href="#">Adicionar Administrador</a>
+        </li>
+        <li ng-if="!isAdmin()" role="presentation" ui-sref="manage.all_request" ui-sref-active="active">
+            <a href="#">Solicitações</a>
         </li>
     </ul>
 

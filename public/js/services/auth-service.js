@@ -48,7 +48,8 @@ angular
                     name: payload.name,
                     registration: payload.registration,
                     id: payload.id,
-                    campus: payload.campus
+                    campus: payload.campus,
+                    role: payload.role
                 };
             }
         };
