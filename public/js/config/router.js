@@ -51,11 +51,6 @@ app.config(function ($stateProvider, $urlRouterProvider, $locationProvider, $htt
         controller: 'ReqTableCtrl'
     }
 
-    const manageMaps = {
-        name: 'manage.maps',
-        templateUrl: "/templates/pages/manage-maps.html"
-    }
-
     const manageAdmins = {
         name: 'manage.admins',
         templateUrl: "/templates/pages/manage-admins.html"
@@ -69,7 +64,6 @@ app.config(function ($stateProvider, $urlRouterProvider, $locationProvider, $htt
         .state(home)
         .state(manage)
         .state(manageRequests)
-        .state(manageMaps)
         .state(manageAdmins)
 
     $urlRouterProvider.otherwise("/");
