@@ -10,6 +10,7 @@ angular.module('mufcg')
 
     (function main() {
       init();
+      $scope.toggle = true;      
     })();
 
     $scope.editResquest = function (request) {

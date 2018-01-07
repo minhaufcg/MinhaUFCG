@@ -1,14 +1,19 @@
 <div class="container">
-    <li ng-class="{ 'is-active': toggle}">
-        <a ng-click="showPending()">
-            <span style="color: white">Solicitações Pendentes</span>
-        </a>
-    </li>
-    <li ng-class="{ 'is-active': !toggle}">
-        <a ng-click="showResolved()">
-            <span style="color: white">Solicitações Resolvidas</span>
-        </a>
-    </li>
+    <div class="row">
+        <ul class="list-inline pull-right">
+            <li>
+                <button ng-class="{ 'active': toggle, else: 'disable'}"type="button" style="padding: 5px; border-radius: 1px 1px black; box-shadow: 1px; margin: 0px;">
+                    <a ng-click="showPending()" ><span>Pendentes</span></a>
+                </button>
+            </li>
+
+            <li>
+                <button ng-class="{ 'active': !toggle, else: 'disable'}" type="button" style="padding: 5px; border-radius: 1px 1px black; box-shadow: 1px; margin: 0px;">
+                    <a ng-click="showResolved()"><span>Resolvidas</span></a>
+                </button>
+            </li>
+        </ul>
+    </div>
 </div>
 
 <div class="container">
