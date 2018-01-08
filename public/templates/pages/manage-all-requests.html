@@ -16,8 +16,21 @@
       <td>{{req.title}}</td>
       <td>{{req.description}}</td>
       <td><button>location</button></td>
-      <td>{{req.status}}</td>
-      <td>{{req.priority}}</td>
+      <td>
+        <select ng-model="req.status" ng-change="updateRequest(req)">
+          <option value="pending">Pendente</option>
+          <option value="ongoing">Em andamento</option>
+          <option value="done">Terminado</option>          
+        </select>
+      </td>
+      <td>
+        <select ng-model="req.priority" ng-change="updateRequest(req)">
+          <option value="unset">Não definida</option>
+          <option value="low">Baixa</option>
+          <option value="regular">Média</option>
+          <option value="high">Alta</option>
+        </select>
+      </td>
       <td>{{req.author}}</td>
     </tr>
   </tbody>

@@ -18,11 +18,15 @@ angular.module("mufcg").factory('Request', function RequestFactory($http, PROPER
         },
 
         getAllResolved : function() {
-            return $http.get(PROPERTIES.restBasePath.concat('/requests', '?status=pending'));
+            return $http.get(PROPERTIES.restBasePath.concat('/requests', '?status=done'));
         },
 
         getAll: () => {
             return $http.get(PROPERTIES.restBasePath.concat('/requests'));
+        },
+
+        update: (request) => {
+            return $http.put(PROPERTIES.restBasePath.concat('/requests/', request._id), {request});
         }
     }
 });

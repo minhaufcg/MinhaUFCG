@@ -57,12 +57,12 @@ const requestsUpdateOne = function (req, res) {
     // author: Ruan Eloy 05/11/17
     const requestId = req.params.requestId;
 
-    const properties = ['title', 'description', 'location', 'img'];
+    const properties = ['title', 'description', 'location', 'img', 'status', 'priority'];
     const update = {};
     
     properties.forEach(prop => {
         if(req.body.request[prop]) { 
-            update[prop] = req.body[prop];
+            update[prop] = req.body.request[prop];
         }
     });
     
