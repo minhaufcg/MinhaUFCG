@@ -6,14 +6,19 @@ mongoose.Promise = require('bluebird');
 
 
 const addAdmin = function (req, res) {
-    User.update(req, res, { isAdmin: true }); 
+    User.updateByRegistration(req, res, { isAdmin: true }); 
 };
 
 const removeAdmin = function (req, res) {
-    User.update(req, res, { isAdmin: false }); 
+    User.updateByRegistration(req, res, { isAdmin: false }); 
+};
+
+const getUserByRegistration = function (req, res) {
+    User.getByRegistration(req, res, req.params.registration);
 };
 
 module.exports = {
     addAdmin: addAdmin,
-    removeAdmin: removeAdmin
+    removeAdmin: removeAdmin,
+    getUserByRegistration: getUserByRegistration
 };

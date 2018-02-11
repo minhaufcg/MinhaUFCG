@@ -58,7 +58,8 @@ app.config(function ($stateProvider, $urlRouterProvider, $locationProvider, $htt
 
     const manageAdmins = {
         name: 'manage.admins',
-        templateUrl: "/templates/pages/manage-admins.html"
+        templateUrl: "/templates/pages/manage-admins.html",
+        controller: "ManageAdminCtrl"
     }
 
     $stateProvider
@@ -109,9 +110,6 @@ app.run(function authInterceptor(AuthService, $transitions, $state, $location) {
         'register': true
     };
     var adminRoutes = {
-        'manage': true,
-        'manage.requests': true,
-        'manage.maps': true,
         'manage.admins': true
     };
     $transitions.onStart({

@@ -1,4 +1,44 @@
-<div>
-
-    <h1>Admins</h1>
+<div class="container col-md-6 col-md-offset-3">
+    <div class="row ">
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="Matrícula do usuário" ng-model="registration">
+            <span class="input-group-btn">
+                <button class="btn btn-default" type="button" ng-click="search()">
+                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span> Buscar
+                </button>
+            </span>
+        </div>           
+    </div>
+    <div class="row" style="margin-top: 2em">
+        <div class="jumbotron">
+            <div ng-show="user">
+                <div class="row">
+                    <h3>Dados do Usuário:</h3>
+                    <h4>Nome: {{user.name}}</h4>
+                    <h4>Matrícula: {{user.registration}}</h4>
+                    <h4>Campus: {{user.campus}}</h4>
+                    <h4>Cargo: {{user.role}}</h4>
+                </div>
+                <center class="row" style="margin-top: 1em">
+                    <div ng-if="!user.isAdmin">
+                        <h4>Este usuário não é um administrador. Deseja torná-lo um?</h4>
+                        <a class="btn btn-primary" href="#" role="button" ng-click="addAdmin()">
+                            Adicionar Administrador
+                        </a>
+                    </div>
+                    <div ng-if="user.isAdmin">
+                        <h4>Este usuário já é um administrador. Deseja remover este privilégio?</h4>
+                        <a class="btn btn-danger" href="#" role="button" ng-click="removeAdmin()">
+                            Remover Administrador
+                        </a>
+                    </div>
+                </center>
+            </div>
+            <div ng-hide="user">
+                <center>
+                    <h2>Pesquise por um usuário</h2>
+                </center>
+            </div>
+        </div>
+    </div>
 </div>

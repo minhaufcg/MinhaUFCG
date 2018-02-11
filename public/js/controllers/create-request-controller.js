@@ -1,6 +1,5 @@
 angular.module('mufcg')
 .controller('CreateRequestCtrl', function ($scope, AuthService, Request, $uibModal, messagebox, $location) {
-    //authService.getCurrentUser()._id
     $scope.create = function() {
         if (verifyRequest()) {
 

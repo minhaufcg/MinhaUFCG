@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const constants = require('../config/constants');
 const RestHelper = require('../helpers/rest-helper');
+const Utils = require('../helpers/utils');
 
 mongoose.Promise = require('bluebird');
 
@@ -58,15 +59,7 @@ userSchema.methods.generateJwt = function() {
     const expiry = new Date();
     expiry.setDate(expiry.getDate() + NUMBER_OF_DAYS);
     
-    const payload = { 
-        id: this._id,
-        registration: this.registration,
-        name: this.name,
-        role: this.role,
-        isAdmin: this.isAdmin,
-        campus: this.campus
-    };
-
+    const payload = Utils.makeUser(this);
     const token = jwt.sign(
         payload, 
         secret,
@@ -76,14 +69,22 @@ userSchema.methods.generateJwt = function() {
     return token;
 };
 
-userSchema.statics.getByRegistration = function(registration) {
-    this.find({registration : registration})
-    .then(user => {
-        return user;
-    })
-    .catch(err => {
-        return null;
-    });
+userSchema.statics.getByRegistration = function(req, res, registration) {
+    if(registration) {
+        this.findOne({registration : registration})
+        .then(user => {
+            if (!user) {
+                RestHelper.sendJsonResponse(res, 404, { "message": "User not found" });
+            } else {
+                RestHelper.sendJsonResponse(res, 200, Utils.makeUser(user));
+            }
+        })
+        .catch(err => {
+            RestHelper.sendJsonResponse(res, 404, err);
+        });
+    } else {
+        RestHelper.sendJsonResponse(res, 404, { "message": "No user registration found" });
+    }
 };
 
 userSchema.statics.update = function (req, res, update) {
@@ -99,6 +100,22 @@ userSchema.statics.update = function (req, res, update) {
             });
     } else {
         RestHelper.sendJsonResponse(res, 404, { "message": "No userId" });
+    }
+};
+
+userSchema.statics.updateByRegistration = function (req, res, update) {
+    const registration = req.params.registration;
+    
+    if(registration) {
+        this.findOneAndUpdate({ "registration": registration }, update)
+            .then(oldUser => {
+                RestHelper.sendJsonResponse(res, 200, oldUser);
+            })
+            .catch(err => {
+                RestHelper.sendJsonResponse(res, 400, err);
+            });
+    } else {
+        RestHelper.sendJsonResponse(res, 404, { "message": "No user registration found" });
     }
 };
 
