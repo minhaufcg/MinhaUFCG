@@ -7,6 +7,7 @@ const requestsCtrl = require('../controllers/requests');
 const usersCtrl = require('../controllers/users');
 const adminsCtrl = require('../controllers/admins');
 const locationsCtrl = require('../controllers/locations');
+const authCtrl = require('../controllers/auth');
 
 const router = express.Router();
 const auth = jwt({
@@ -22,12 +23,13 @@ router.put('/requests/:requestId', auth, requestsCtrl.requestsUpdateOne);
 router.delete('/requests/:requestId', auth, requestsCtrl.requestsDeleteOne);
 
 router.post('/users/', usersCtrl.usersCreateOne);
+router.get('/users/untrusted', auth, userRole.can('access admin route'), usersCtrl.getPendentUsers);
 router.get('/users/:userId', auth, usersCtrl.usersReadOne);
 router.put('/users/:userId', auth, usersCtrl.usersUpdateOne);
 router.delete('/users/:userId', auth, usersCtrl.usersDeleteOne);
-router.post('/login/', usersCtrl.login);
-router.get('/logout/', usersCtrl.logout);
 
+router.post('/login/', authCtrl.login);
+router.get('/logout/', authCtrl.logout);
 
 router.get('/admins/:registration', auth, userRole.can('access admin route'), adminsCtrl.getUserByRegistration);
 router.post('/admins/:registration', auth, userRole.can('access admin route'), adminsCtrl.addAdmin);

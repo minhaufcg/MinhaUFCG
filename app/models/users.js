@@ -2,10 +2,8 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const constants = require('../config/constants');
-const RestHelper = require('../helpers/rest-helper');
 const Utils = require('../helpers/utils');
-
-mongoose.Promise = require('bluebird');
+const Q = require('q');
 
 const Schema = mongoose.Schema;
 
@@ -34,10 +32,15 @@ const userSchema = Schema({
         type: Boolean,
         default: false
     },
-    campus : {
+    campus: {
         type: Schema.Types.ObjectId,
         ref : "Campus",
         required: true
+    },
+    verification: {
+        type: String,
+        enum: ["trusted", "pendent", "rejected"],
+        default: "pendent"
     },
     hash: String
 });
@@ -69,54 +72,61 @@ userSchema.methods.generateJwt = function() {
     return token;
 };
 
-userSchema.statics.getByRegistration = function(req, res, registration) {
-    if(registration) {
-        this.findOne({registration : registration})
-        .then(user => {
-            if (!user) {
-                RestHelper.sendJsonResponse(res, 404, { "message": "User not found" });
-            } else {
-                RestHelper.sendJsonResponse(res, 200, Utils.makeUser(user));
-            }
+userSchema.methods.isRejected = function() {
+    return this.verification == "rejected";
+}
+
+userSchema.statics.getByRegistration = function(registration) {
+    var deferred = Q.defer();
+    this.findOne({registration : registration})
+    .then(user => {
+        if (!user) {
+            deferred.reject({ message: "User not found" });
+        } else {
+            deferred.resolve(Utils.makeUser(user));
+        }
+    })
+    .catch(err => {
+        deferred.reject(err);
+    });
+    return deferred.promise;
+};
+
+userSchema.statics.update = function (userId, patch) {
+    var deferred = Q.defer();
+    this.findByIdAndUpdate({ "_id": userId }, patch)
+        .then(oldUser => {
+            deferred.resolve(oldUser);
         })
         .catch(err => {
-            RestHelper.sendJsonResponse(res, 404, err);
+            deferred.reject(err);
         });
-    } else {
-        RestHelper.sendJsonResponse(res, 404, { "message": "No user registration found" });
-    }
+    return deferred.promise;
 };
 
-userSchema.statics.update = function (req, res, update) {
-    const userId = req.params.userId;
-    
-    if(userId) {
-        this.findByIdAndUpdate({ "_id": userId }, update)
-            .then(oldUser => {
-                RestHelper.sendJsonResponse(res, 200, oldUser);
-            })
-            .catch(err => {
-                RestHelper.sendJsonResponse(res, 400, err);
-            });
-    } else {
-        RestHelper.sendJsonResponse(res, 404, { "message": "No userId" });
-    }
+userSchema.statics.updateByRegistration = function (registration, update) {
+    var deferred = Q.defer();
+    this.findOneAndUpdate({ "registration": registration }, update)
+        .then(oldUser => {
+            deferred.resolve(oldUser);
+        })
+        .catch(err => {
+            deferred.reject(err);
+        });
+    return deferred.promise;
 };
 
-userSchema.statics.updateByRegistration = function (req, res, update) {
-    const registration = req.params.registration;
-    
-    if(registration) {
-        this.findOneAndUpdate({ "registration": registration }, update)
-            .then(oldUser => {
-                RestHelper.sendJsonResponse(res, 200, oldUser);
-            })
-            .catch(err => {
-                RestHelper.sendJsonResponse(res, 400, err);
-            });
-    } else {
-        RestHelper.sendJsonResponse(res, 404, { "message": "No user registration found" });
-    }
-};
+userSchema.statics.findPendentUsers = function () {
+    var deferred = Q.defer();
+    this.find({"verification": "pendent"})
+        .then(users => {
+            deferred.resolve(users);
+        })
+        .catch(err => {
+            deferred.reject(err);
+        });
+    return deferred.promise;
+}
+
 
 module.exports = mongoose.model("User", userSchema);
