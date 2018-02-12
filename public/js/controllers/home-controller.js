@@ -1,7 +1,8 @@
 angular.module('mufcg')
-.controller('HomeCtrl', function ($scope, NgMap, mapHelper, LOCATIONS, AuthService, Request) {
+.controller('HomeCtrl', function ($scope, NgMap, mapHelper, LOCATIONS, ICONS, AuthService, Request, $filter) {
     var map = undefined;
     var ufcgPolygon = undefined;
+    var requests = undefined;
 
     $scope.initMap = function () {
         NgMap.getMap().then(function (mapResult) {
@@ -19,29 +20,23 @@ angular.module('mufcg')
 
     function loadAuthorRequests() {
         Request.getByAuthor(AuthService.getCurrentUser().id).then(function (res) {
-            res.data.forEach(function (request) {
-                var location = {};
-                if ('location' in request) {
-                    location.lat = request.location.lat;
-                    location.lng = request.location.lng;
-                    let image =  undefined;
-                    if (request.img) {
-                        image = 'data:'.concat(request.img.filetype, ';base64,', request.img.base64);
-                    }
-                    createMarker(request.title, request.description, image, request.createdOn, location);
-                }
-            });
+            requests = res.data;
+            displayRequests(requests);
         });
     }
 
+    function createMarker(title, description, image, date, location, icon) {
+        var parsedImage = undefined;
 
-
-    function createMarker(title, description, image, date, location) {
+        if (image) {
+            parsedImage = 'data:'.concat(image.filetype, ';base64,', image.base64);
+        }
         var contentString = `
-                <h1>${title}</h1>
+                <h1 style="text-align: center">${title}</h1>
+                <h5 style="text-align: center">${$filter('date')(date,'dd/MM/y')}</h5>
                 <p>${description}</p>
-                <img src="${image}" style="height: 100px; width : auto" alt=""><br>
-                <p>${date}</p>`;
+                <img src="${parsedImage}" style="height: 100px; width : auto" alt=""><br>
+                `;
 
         var infowindow = new google.maps.InfoWindow({
             content: contentString
@@ -52,10 +47,48 @@ angular.module('mufcg')
         marker.setPosition(location);
         marker.setTitle(title);
 
+        if (icon)
+            marker.setIcon(ICONS[icon.type][icon.value]);
+
+
         marker.addListener('click', function () {
             infowindow.open(map, marker);
         });
 
         mapHelper.addMarker(marker);
     }
+
+    function displayRequests(requests, filter) {
+        requests.forEach(function (request) {
+            createMarker(request.title, request.description, request.img, request.createdOn, request.location,
+                        filter ? {type : filter.type, value : request[filter.type]} : null);
+        });
+    }
+
+
+    $scope.$watchCollection('requestFilter', function (filter) {
+        if (!requests)
+            return;
+
+        if (filter === 'none') {
+            displayRequests(requests);
+            return;
+        }
+
+        var outputRequests = [];
+
+        if (filter.subType !== 'all') {
+            requests.forEach(function (request) {
+                if (request[filter.type] === filter.subType)
+                    outputRequests.push(request)
+            });
+        }
+
+        else
+            outputRequests = requests;
+
+        mapHelper.deleteAllMarkers();
+
+        displayRequests(outputRequests, filter);
+    });
 });
