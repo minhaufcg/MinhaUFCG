@@ -30,6 +30,13 @@ app.config(function ($stateProvider, $urlRouterProvider, $locationProvider, $htt
         controller : 'CreateRequestCtrl'
     };
 
+    const editRequest = {
+        name : 'edit_request',
+        url : '/request/edit/:id',
+        templateUrl : '/templates/pages/edit-request.html',
+        controller : 'EditRequestCtrl'
+    };
+
     const manage = {
         name: 'manage',
         url: '/manage',
@@ -40,7 +47,8 @@ app.config(function ($stateProvider, $urlRouterProvider, $locationProvider, $htt
 
     const manageRequests = {
         name: 'manage.requests',
-        templateUrl: "/templates/pages/manage-requests.html"
+        templateUrl: "/templates/pages/manage-requests.html",
+        controller: 'ReqTableCtrl'
     }
 
     const manageMaps = {
@@ -50,13 +58,15 @@ app.config(function ($stateProvider, $urlRouterProvider, $locationProvider, $htt
 
     const manageAdmins = {
         name: 'manage.admins',
-        templateUrl: "/templates/pages/manage-admins.html"
+        templateUrl: "/templates/pages/manage-admins.html",
+        controller: "ManageAdminCtrl"
     }
 
     $stateProvider
         .state(login)
         .state(register)
         .state(createRequest)
+        .state(editRequest)
         .state(home)
         .state(manage)
         .state(manageRequests)
@@ -94,17 +104,37 @@ app.factory('BearerAuthInterceptor', function($injector, $q, $state) {
 });
 
 app.run(function authInterceptor(AuthService, $transitions, $state, $location) {
-    var allowedRoutes = {
-        login: true,
-        register: true
+    var redirectState = 'login';
+    var noAuthRoutes = {
+        'login': true,
+        'register': true
+    };
+    var adminRoutes = {
+        'manage.admins': true
     };
     $transitions.onStart({
         to: function(state) {
-            return !allowedRoutes[state.name] && !AuthService.isLoggedIn();
+            var authNeeded = false;
+            var notAuthorized = false;
+            var isAdmin = AuthService.isAdmin();
+
+            if(AuthService.isLoggedIn()) {
+                var isAdminRoute = adminRoutes[state.name];
+
+                if(isAdminRoute) {
+                    redirectState = 'home';
+                    notAuthorized = !isAdmin;
+                }
+            } else {
+                var forbiddenRoute = !noAuthRoutes[state.name];
+                authNeeded = forbiddenRoute;
+            }
+
+            return authNeeded || notAuthorized;
         }
-    }, function(transition) {
-        $state.go("login", {
-            "redirect": $location.path()
+    }, function notAllowed(transition) {
+        $state.go(redirectState, {
+            redirect: $location.path()
         });
     });
 });

@@ -56,11 +56,16 @@ const requestsUpdateOne = function (req, res) {
     // TODO: use json patch 
     // author: Ruan Eloy 05/11/17
     const requestId = req.params.requestId;
-    const update = {
-        description: req.body.description,
-        status: req.body.status,
-        coords: req.body.coords
-    };
+
+    const properties = ['title', 'description', 'location', 'img'];
+    const update = {};
+    
+    properties.forEach(prop => {
+        if(req.body.request[prop]) { 
+            update[prop] = req.body[prop];
+        }
+    });
+    
     if(requestId) {
         Request
             .findOneAndUpdate({ "_id": requestId }, update)
@@ -95,7 +100,6 @@ const requestsDeleteOne = function (req, res) {
 const getByAuthor = function (req, res) {
     const userId = req.params.userId;
     if (userId) {
-        console.log(userId);
         Request.getByAuthor(userId)
             .then(function (requests) {
                 RestHelper.sendJsonResponse(res,200,requests);

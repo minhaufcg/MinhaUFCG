@@ -1,9 +1,11 @@
 const express = require('express');
 const jwt = require('express-jwt');
+const userRole = require('../config/connect-roles');
 
 const constants = require('../config/constants')
 const requestsCtrl = require('../controllers/requests');
 const usersCtrl = require('../controllers/users');
+const adminsCtrl = require('../controllers/admins');
 const locationsCtrl = require('../controllers/locations');
 
 const router = express.Router();
@@ -24,6 +26,12 @@ router.get('/users/:userId', auth, usersCtrl.usersReadOne);
 router.put('/users/:userId', auth, usersCtrl.usersUpdateOne);
 router.delete('/users/:userId', auth, usersCtrl.usersDeleteOne);
 router.post('/login/', usersCtrl.login);
+router.get('/logout/', usersCtrl.logout);
+
+
+router.get('/admins/:registration', auth, userRole.can('access admin route'), adminsCtrl.getUserByRegistration);
+router.post('/admins/:registration', auth, userRole.can('access admin route'), adminsCtrl.addAdmin);
+router.delete('/admins/:registration', auth, userRole.can('access admin route'), adminsCtrl.removeAdmin);
 
 router.get('/campi/', locationsCtrl.getAllCampi);
 router.get('/campi/:campusId/coords', locationsCtrl.getCampusCoords);

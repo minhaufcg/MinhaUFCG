@@ -1,22 +1,27 @@
 angular.module('mufcg')
-.controller('CreateRequestCtrl', function ($scope, AuthService, Request, $uibModal, messagebox, $location) {
-    $scope.create = function() {
+.controller('EditRequestCtrl', function ($scope, $state, $window, AuthService, Request, $uibModal, messagebox, $location) {
+    function init() {
+        var list = JSON.parse($window.localStorage.getItem('requests'));
+        $scope.request = list.filter(req => req._id === $state.params.id)[0];
+    }
+    
+    (function main() {
+        init();
+    })();
+
+    $scope.save = function() {
         if (verifyRequest()) {
 
-            Request.create(AuthService.getCurrentUser().id, $scope.request).then(function () {
-                messagebox.success('Solicitação cadastrada com sucesso', undefined, creationCallback());
+            Request.edit(AuthService.getCurrentUser().id, $scope.request).then(function () {
+                messagebox.success('Solicitação editada com sucesso', undefined, creationCallback());
             }, function (err) {
-                messagebox.fail('Ocorreu um erro na criação da solicitação');
+                messagebox.fail('Ocorreu um erro na edição da solicitação');
             });
             
         }
     };
 
-    function creationCallback() {
-        $location.url("/home");
-    }
-
-    $scope.pop = function () {
+    $scope.getLocation = function () {
         var modalInstance = $uibModal.open({
             animation: true,
             ariaLabelledBy: 'modal-title',
@@ -33,6 +38,10 @@ angular.module('mufcg')
             $scope.request.location.geolocation = marker.geolocation;
         });
     };
+
+    function creationCallback() {
+        $location.url("/home");
+    }
 
     function verifyRequest() {
         let fileSizeLimit = 1048576; // 1MB
