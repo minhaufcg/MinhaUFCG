@@ -1,7 +1,44 @@
 <link rel="stylesheet" href="styles/home.css">
 
+
+<div>
+
+</div>
+<div class="filter-input">
+    <div style="width: 100%;" ng-init="requestFilter = {type : 'none', subType : 'all'}">
+        <span style="font-family: 'Poiret One', cursive;font-size: 20">Filtrar:</span>
+        <select class="form-control" style="width: 100%" ng-model="requestFilter.type">
+            <option value="none">Nenhum</option>
+            <option value="status">Status</option>
+            <option value="priority">Prioridade</option>
+        </select>
+    </div>
+</div>
+
+<div class="filter-input" ng-if="requestFilter.type === 'status'">
+    <div style="width: 100%;" ng-init="statusFilter = 'all'">
+        <select class="form-control" style="width: 100%; margin-top: 28px" ng-model="requestFilter.subType">
+            <option value="all">Todas</option>
+            <option value="pending">Pendente</option>
+            <option value="ongoing">Em Progresso</option>
+            <option value="done">Feito</option></select>
+    </div>
+</div>
+
+<div class="filter-input" ng-if="requestFilter.type === 'priority'">
+    <div style="width: 100%;" ng-init="statusFilter = 'all'">
+        <select class="form-control" style="width: 100%; margin-top: 28px" ng-model="requestFilter.subType">
+            <option value="all">Todas</option>
+            <option value="high">Alta</option>
+            <option value="regular">Normal</option>
+            <option value="low">Baixa</option>
+            <option value="unset">Indefinida</option>
+        </select>
+    </div>
+</div>
+
 <div map-lazy-load="https://maps.googleapis.com/maps/api/js"
      map-lazy-load-params="https://maps.googleapis.com/maps/api/js?key=AIzaSyCg-DgACUXO_nUZ5W9A5VHe2H0wD-9tycs" ng-init="initMap()" style="margin-top: -20px; min-width: 400px;">
-    <ng-map map-type-id="hybrid" center="0,0" zoom="18" style="width: 100%; height: auto;" on-dragend="dragLimit()" on-click="click()">
+    <ng-map map-type-id="hybrid" center="0,0" zoom="18" style="width: 100%; height: 85%; margin-top: 5%" on-dragend="dragLimit()" on-click="click()">
     </ng-map>
 </div>
