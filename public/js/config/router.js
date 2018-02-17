@@ -42,7 +42,7 @@ app.config(function ($stateProvider, $urlRouterProvider, $locationProvider, $htt
         url: '/manage',
         templateUrl: '/templates/pages/manage.html',
         controller: 'ManageCtrl',
-        redirectTo: 'manage.requests'
+        redirectTo: 'manage.users'
     }
 
     const manageRequests = {
@@ -62,6 +62,12 @@ app.config(function ($stateProvider, $urlRouterProvider, $locationProvider, $htt
         controller: "ManageAdminCtrl"
     }
 
+    const manageUsers = {
+        name: 'manage.users',
+        templateUrl: "/templates/pages/manage-users.html",
+        controller: "ManageUsersCtrl"
+    }
+
     $stateProvider
         .state(login)
         .state(register)
@@ -72,6 +78,7 @@ app.config(function ($stateProvider, $urlRouterProvider, $locationProvider, $htt
         .state(manageRequests)
         .state(manageMaps)
         .state(manageAdmins)
+        .state(manageUsers);
 
     $urlRouterProvider.otherwise("/");
 

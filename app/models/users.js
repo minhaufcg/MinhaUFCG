@@ -39,8 +39,8 @@ const userSchema = Schema({
     },
     verification: {
         type: String,
-        enum: ["trusted", "pendent", "rejected"],
-        default: "pendent"
+        enum: ["trusted", "untrusted", "rejected"],
+        default: "untrusted"
     },
     hash: String
 });
@@ -78,7 +78,7 @@ userSchema.methods.isRejected = function() {
 
 userSchema.statics.getByRegistration = function(registration) {
     var deferred = Q.defer();
-    this.findOne({registration : registration})
+    this.findOne({ registration : registration })
     .then(user => {
         if (!user) {
             deferred.reject({ message: "User not found" });
@@ -116,9 +116,23 @@ userSchema.statics.updateByRegistration = function (registration, update) {
     return deferred.promise;
 };
 
-userSchema.statics.findPendentUsers = function () {
+userSchema.statics.getByPropertyValue = function (property, value) {
     var deferred = Q.defer();
-    this.find({"verification": "pendent"})
+    var query = {};
+    query[property] = value;
+    this.find(query)
+        .then(users => {
+            deferred.resolve(users);
+        })
+        .catch(err => {
+            deferred.reject(err);
+        });
+    return deferred.promise;
+}
+
+userSchema.statics.findAll = function () {
+    var deferred = Q.defer();
+    this.find()
         .then(users => {
             deferred.resolve(users);
         })

@@ -10,6 +10,10 @@ angular.module("mufcg").factory('User', function UserFactory($http, PROPERTIES) 
     
         removeAdmin: function (registration) {
             return $http.delete('/api/admins/' + registration);
+        },
+
+        getUntrustedUsers: function () {
+            return $http.get('api/users/untrusted');
         }
     }
 });

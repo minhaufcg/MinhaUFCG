@@ -84,8 +84,12 @@ const usersDeleteOne = function (req, res) {
     }
 };
 
-const getPendentUsers = function (req, res) {
-    User.findPendentUsers()
+const getUsersByProperty = function (req, res) {
+    var queryKeys = Object.keys(req.query);
+    var property = queryKeys[0] || "";
+    var value = req.query[property] || "";
+
+    User.getByPropertyValue(property, value)
     .then(users => {
         RestHelper.sendJsonResponse(res, 200, users);
     })
@@ -99,5 +103,5 @@ module.exports = {
     usersCreateOne: usersCreateOne,
     usersUpdateOne: usersUpdateOne,
     usersDeleteOne: usersDeleteOne,
-    getPendentUsers: getPendentUsers
+    getUsersByProperty: getUsersByProperty
 };
