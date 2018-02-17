@@ -1,31 +1,39 @@
 angular.module('mufcg')
 .controller("ManageUsersCtrl", function ManageUsersCtrl($scope, User) {
-    $scope.users = [ 
-        makeUser('Carla da Silva', '12342323'), 
-        makeUser('Ricardo Bezerra', '12342323'),
-        makeUser('Samira Eloy', '12342323'),
-        makeUser('Guz de Sá', '12342323')        
-    ];
-
-    function makeUser(name, reg) {
-        return {
-            name: name,
-            registration: reg,
-            verification: "untrusted",
-            role: "Estudante"
-        }
-    }
+    $scope.filter = 'untrusted';
+    $scope.users = [];
 
     $scope.block = function (user) {
-        user.verification = "rejected";
-    }
+        setVerification("rejected", user);
+    };
 
     $scope.unblock = function (user) {
-        user.verification = "untrusted";
-    }
+        setVerification("untrusted", user);
+    };
 
     $scope.accept = function (user) {
-        user.verification = "trusted";
+        setVerification("trusted", user);
+    };
+
+    function getUsersByVerification(value) {
+        User.getUsersByPropertyValue('verification', value)
+        .then(function(response) {
+            $scope.users = response.data;
+        }, function(error) {
+            console.error(error);
+        });
     }
 
+    function setVerification(value, user) {
+        User.update(user._id, {verification: value})
+        .then(function (response) {
+            user.verification = value;
+        }, function (error) {
+            console.error(error);
+        });
+    }
+
+    (function loadUsers() {
+        getUsersByVerification($scope.filter);
+    })();
 });

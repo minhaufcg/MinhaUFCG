@@ -46,14 +46,7 @@ const usersCreateOne = function (req, res) {
 
 const usersUpdateOne = function (req, res) {
     const userId = req.params.userId;
-    const properties = ['name', 'role'];
-    const patch = {};
-    
-    properties.forEach(prop => {
-        if(req.body[prop]) {
-            patch[prop] = req.body[prop];
-        }
-    });
+    const patch = req.body;
 
     if(userId) {
         User.update(userId, patch)
@@ -98,10 +91,21 @@ const getUsersByProperty = function (req, res) {
     });
 };
 
+const findAll = function (req, res) {
+    User.findAll()
+    .then(users => {
+        RestHelper.sendJsonResponse(res, 200, users);
+    })
+    .catch(err => {
+        RestHelper.sendJsonResponse(res, 400, err);
+    });
+};
+
 module.exports = {
     usersReadOne: usersReadOne,
     usersCreateOne: usersCreateOne,
     usersUpdateOne: usersUpdateOne,
     usersDeleteOne: usersDeleteOne,
-    getUsersByProperty: getUsersByProperty
+    getUsersByProperty: getUsersByProperty,
+    findAll: findAll
 };
