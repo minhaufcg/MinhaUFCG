@@ -1,12 +1,29 @@
 <div class="row">
     <div class="col-md-8 col-md-offset-2">
-        <div class="panel panel-info ">
+        <div class="panel panel-info">
             <div class="panel-heading">
-                <h4>Novos Usuários</h4>
+                <div class="row">
+                    <div class="col-md-2">
+                        <h4>Usuários:</h4>
+                    </div>
+                    <div class="col-md-10">
+                        <ul class="nav nav-pills nav-justified">
+                            <li role="presentation" ng-class="filter == 'untrusted'?'active':''">
+                                <a href="#" ng-click="filterBy('untrusted')">Novos</a>
+                            </li>
+                            <li role="presentation" ng-class="filter == 'trusted'?'active':''">
+                                <a href="#" ng-click="filterBy('trusted')">Aceitos</a>
+                            </li>
+                            <li role="presentation" ng-class="filter == 'rejected'?'active':''">
+                                <a href="#" ng-click="filterBy('rejected')">Bloqueados</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
             <div class="panel-body">
                 <ul class="list-group">
-                    <li class="list-group-item" style="margin-bottom: 5px" ng-repeat="user in users">
+                    <li class="list-group-item" style="margin-bottom: 5px" ng-repeat="user in page.data track by $index">
                         <div class="row">
                             <div class="col-md-9">
                                 <h4><b>{{user.name}}</b></h4>
@@ -26,6 +43,26 @@
                         </div>
                     </li>
                 </ul>
+                <center>
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination">
+                            <li ng-click="prev()">
+                                <a href="#" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            <li ng-repeat="pageNumber in getPages()" ng-class="page.current == pageNumber ? 'active': ''"
+                                ng-click="goToPage(pageNumber)">
+                                <a href="#">{{pageNumber + 1}}</a>
+                            </li>
+                            <li ng-click="next()">
+                                <a href="#" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </center>
             </div>
         </div>
     </div>
