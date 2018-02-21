@@ -20,8 +20,11 @@ angular.module('mufcg')
     };
 
     $scope.getPages = function () {
-      var indexes = Array(Pagination.pagesTotal()).keys();
-      return [...indexes];
+      var indexes = [];
+      for(var i = 0; i < Pagination.pagesTotal(); i++) {
+        indexes.push(i);
+      }
+      return indexes;
     };
 
     $scope.next = function () {
@@ -46,9 +49,15 @@ angular.module('mufcg')
       User.update(user._id, {verification: value})
       .then(function (response) {
           user.verification = value;
+          removeUserFromList(user);
       }, function (error) {
           console.error(error);
       });
+    }
+
+    function removeUserFromList(user) {
+      var index = $scope.page.data.indexOf(user);
+      if(index > -1) $scope.page.data.splice(index, 1);
     }
 
     $scope.goToPage = function (page) {
@@ -58,7 +67,8 @@ angular.module('mufcg')
     function initiatePagination(users) {
       var BEGIN = 0;
       Pagination.configure({
-          data: users
+          data: users,
+          perPage: 4
       });
       $scope.goToPage(BEGIN);
     }

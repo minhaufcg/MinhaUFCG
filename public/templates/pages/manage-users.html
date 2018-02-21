@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-md-8 col-md-offset-2">
-        <div class="panel panel-info">
+        <div class="panel panel-info" style="min-height: 2rem;">
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-md-2">
@@ -22,28 +22,30 @@
                 </div>
             </div>
             <div class="panel-body">
-                <ul class="list-group">
-                    <li class="list-group-item" style="margin-bottom: 5px" ng-repeat="user in page.data track by $index">
-                        <div class="row">
-                            <div class="col-md-9">
-                                <h4><b>{{user.name}}</b></h4>
-                                <p style="margin: 0"><b>Cargo: </b> {{user.role}}</p> 
-                                <p><b>Matrícula: </b> {{user.registration}}</p>
+                <div style="height:32em">
+                    <ul class="list-group">
+                        <li class="list-group-item" style="margin-bottom: 5px" ng-repeat="user in page.data track by $index">
+                            <div class="row">
+                                <div class="col-md-9">
+                                    <h4><b>{{user.name}}</b></h4>
+                                    <p style="margin: 0"><b>Cargo: </b> {{user.role}}</p> 
+                                    <p><b>Matrícula: </b> {{user.registration}}</p>
+                                </div>
+                                <div class="col-md-3" style="padding: 10px;">
+                                    <button type="button" class="btn btn-default" ng-if="user.verification == 'untrusted'" 
+                                        ng-click="accept(user)">Aceitar</button>
+                                    <button type="button" class="btn btn-default" ng-if="user.verification == 'untrusted'" 
+                                        ng-click="block(user)">Bloquear</button>
+                                    <button type="button" class="btn btn-default" ng-if="user.verification == 'rejected'" 
+                                        ng-click="unblock(user)">Desbloquear</button>
+                                    <button type="button" class="btn btn-default" ng-if="user.verification == 'trusted'"
+                                        ng-click="block(user)">Bloquear</button>
+                                </div>
                             </div>
-                            <div class="col-md-3" style="padding: 10px;">
-                                <button type="button" class="btn btn-default" ng-if="user.verification == 'untrusted'" 
-                                    ng-click="accept(user)">Aceitar</button>
-                                <button type="button" class="btn btn-default" ng-if="user.verification == 'untrusted'" 
-                                    ng-click="block(user)">Bloquear</button>
-                                <button type="button" class="btn btn-default" ng-if="user.verification == 'rejected'" 
-                                    ng-click="unblock(user)">Desbloquear</button>
-                                <button type="button" class="btn btn-default" ng-if="user.verification == 'trusted'"
-                                    ng-click="block(user)">Bloquear</button>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-                <center>
+                        </li>
+                    </ul>
+                </div>
+                <center style="margin: 0.5em;">
                     <nav aria-label="Page navigation">
                         <ul class="pagination">
                             <li ng-click="prev()">
