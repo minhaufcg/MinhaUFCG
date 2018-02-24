@@ -9,7 +9,7 @@ const login = function (req, res) {
         if(err) {
             RestHelper.sendJsonResponse(res, 404, err);
         } else if(user && user.isRejected()) {
-            RestHelper.sendJsonResponse(res, 404, {message: "The user was rejected"});
+            RestHelper.sendJsonResponse(res, 403, {message: "User rejected"});
         } else if(user) {
                 req.login(user, function (err){
                     if(err) { 

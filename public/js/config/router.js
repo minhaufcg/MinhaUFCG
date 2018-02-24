@@ -42,7 +42,7 @@ app.config(function ($stateProvider, $urlRouterProvider, $locationProvider, $htt
         url: '/manage',
         templateUrl: '/templates/pages/manage.html',
         controller: 'ManageCtrl',
-        redirectTo: 'manage.users'
+        redirectTo: 'manage.requests'
     }
 
     const manageRequests = {
