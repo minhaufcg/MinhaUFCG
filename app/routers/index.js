@@ -26,7 +26,7 @@ router.delete('/requests/:requestId', auth, requestsCtrl.requestsDeleteOne);
 
 router.post('/users', usersCtrl.usersCreateOne);
 router.get('/users', auth, userRole.can(ACCESS_MESSAGE), usersCtrl.getUsersByProperty);
-router.get('/users/all', usersCtrl.findAll); // only used on development
+// router.get('/users/all', usersCtrl.findAll); // only used on development
 router.get('/users/:userId', auth, usersCtrl.usersReadOne);
 router.put('/users/:userId', auth, usersCtrl.usersUpdateOne);
 router.delete('/users/:userId', auth, usersCtrl.usersDeleteOne);
