@@ -1,0 +1,72 @@
+<div class="row">
+    <div class="col-md-8 col-md-offset-2">
+        <div class="panel panel-info" style="min-height: 2rem;">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-md-2">
+                        <h4>Usuários:</h4>
+                    </div>
+                    <div class="col-md-10">
+                        <ul class="nav nav-pills nav-justified">
+                            <li role="presentation" ng-class="filter == 'untrusted'?'active':''">
+                                <a href="#" ng-click="filterBy('untrusted')">Novos</a>
+                            </li>
+                            <li role="presentation" ng-class="filter == 'trusted'?'active':''">
+                                <a href="#" ng-click="filterBy('trusted')">Aceitos</a>
+                            </li>
+                            <li role="presentation" ng-class="filter == 'rejected'?'active':''">
+                                <a href="#" ng-click="filterBy('rejected')">Bloqueados</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div style="height:32em">
+                    <ul class="list-group">
+                        <li class="list-group-item" style="margin-bottom: 5px" ng-repeat="user in page.data track by $index">
+                            <div class="row">
+                                <div class="col-md-9">
+                                    <h4><b>{{user.name}}</b></h4>
+                                    <p style="margin: 0"><b>Cargo: </b> {{user.role}}</p> 
+                                    <p><b>Matrícula: </b> {{user.registration}}</p>
+                                </div>
+                                <div class="col-md-3" style="padding: 10px;">
+                                    <button type="button" class="btn btn-default" ng-if="user.verification == 'untrusted'" 
+                                        ng-click="accept(user)">Aceitar</button>
+                                    <button type="button" class="btn btn-default" ng-if="user.verification == 'untrusted'" 
+                                        ng-click="block(user)">Bloquear</button>
+                                    <button type="button" class="btn btn-default" ng-if="user.verification == 'rejected'" 
+                                        ng-click="unblock(user)">Desbloquear</button>
+                                    <button type="button" class="btn btn-default" ng-if="user.verification == 'trusted'"
+                                        ng-click="block(user)">Bloquear</button>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <center style="margin: 0.5em;">
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination">
+                            <li ng-click="prev()">
+                                <a href="#" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            <li ng-repeat="pageNumber in getPages()" ng-class="page.current == pageNumber ? 'active': ''"
+                                ng-click="goToPage(pageNumber)">
+                                <a href="#">{{pageNumber + 1}}</a>
+                            </li>
+                            <li ng-click="next()">
+                                <a href="#" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </center>
+            </div>
+        </div>
+    </div>
+</div>
+

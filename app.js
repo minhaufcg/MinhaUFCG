@@ -35,7 +35,7 @@ app.use(userRole.middleware());
 
 app.use('/api', routesAPI);
 app.get('/', (req, res) => { res.render('index'); });
-app.get('*', (req, res) => { res.sendfile('./public/index.html'); });
+app.get('*', (req, res) => { res.sendFile(path.join(__dirname, '/public', 'index.html')); });
 
 app.use((err, req, res, next) => {
     RestHelper.sendJsonResponse(res, err.status || 500, {

@@ -45,15 +45,20 @@ const usersCreateOne = function (req, res) {
 };
 
 const usersUpdateOne = function (req, res) {
-    const properties = ['name', 'role'];
-    const update = {};
-    for(prop of properties) {
-        if(req.body[prop]) {
-            update[prop] = req.body[prop];
-        }
-    }
+    const userId = req.params.userId;
+    const patch = req.body;
 
-    User.update(req, res, update);
+    if(userId) {
+        User.update(userId, patch)
+        .then(oldUser => {
+            RestHelper.sendJsonResponse(res, 200, oldUser);
+        })
+        .catch(err => {
+            RestHelper.sendJsonResponse(res, 400, err);
+        });
+    } else {
+        RestHelper.sendJsonResponse(res, 404, { "message": "No userId" });
+    }
 };
 
 const usersDeleteOne = function (req, res) {
@@ -72,29 +77,28 @@ const usersDeleteOne = function (req, res) {
     }
 };
 
-const login = function (req, res) {
-    passport.authenticate('local', (err, user, info) => {
-        if(err) {
-            RestHelper.sendJsonResponse(res, 404, err);
-        } else if(user) {
-            req.login(user, function (err){
-                if(err) { 
-                    RestHelper.sendJsonResponse(res, 404, err);
-                }
-                req.session.save(() => {
-                    const token = user.generateJwt();
-                    RestHelper.sendJsonResponse(res, 200, {token: token});
-                })
-            });
-        } else {
-            RestHelper.sendJsonResponse(res, 401, info);
-        }
-    })(req, res);
+const getUsersByProperty = function (req, res) {
+    var queryKeys = Object.keys(req.query);
+    var property = queryKeys[0] || "";
+    var value = req.query[property] || "";
+
+    User.getByPropertyValue(property, value)
+    .then(users => {
+        RestHelper.sendJsonResponse(res, 200, users);
+    })
+    .catch(err => {
+        RestHelper.sendJsonResponse(res, 400, err);
+    });
 };
 
-const logout = function (req, res) {
-    req.logout();
-    RestHelper.sendJsonResponse(res, 200, null);
+const findAll = function (req, res) {
+    User.findAll()
+    .then(users => {
+        RestHelper.sendJsonResponse(res, 200, users);
+    })
+    .catch(err => {
+        RestHelper.sendJsonResponse(res, 400, err);
+    });
 };
 
 module.exports = {
@@ -102,6 +106,6 @@ module.exports = {
     usersCreateOne: usersCreateOne,
     usersUpdateOne: usersUpdateOne,
     usersDeleteOne: usersDeleteOne,
-    login: login,
-    logout: logout
+    getUsersByProperty: getUsersByProperty,
+    findAll: findAll
 };

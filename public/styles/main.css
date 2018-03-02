@@ -48,3 +48,21 @@
     color: white;
     font-weight: bold;
 }
+
+li {
+    opacity: 1;
+}
+
+li.ng-enter {
+    transition: 1s;
+    opacity: 0;
+}
+
+li.ng-enter-active {
+    opacity: 1;
+}
+
+li.ng-leave {
+    transition: 1s;
+    opacity: 0;
+}
