@@ -1,6 +1,6 @@
 <div class="row" style="margin-top: 50px">
     <div class="col-md-3 col-md-offset-4 col-sm-10 col-sm-offset-1">
-        <div class="panel panel-info" style="min-height: 550px;">
+        <div class="panel panel-info" style="min-height: 600px;">
             <div class="div" style="margin: 20px">
                 <form action="">
                     <h3 class="col-xs-offset-4" style="margin-bottom: 30px">Criar solicitação</h3>
@@ -17,7 +17,16 @@
                         <input focus-on-show class="form-control input-lg" name="Descrição do local" value="" placeholder="descrição da localização"
                             ng-model="request.location.description">
                     </div>
-
+                    <div style="margin-bottom: 25px;" class="input-group">
+                        <span class="input-group-addon">Categoria</span>
+                        <select name="" id="" class="form-control input-lg" ng-model="request.category">
+                            <option value="maintenance">Manutenção</option>
+                            <option value="security">Segurança</option>
+                            <option value="suggestion">Sugestão</option>
+                            <option value="cleaning">Limpeza</option>
+                            <option value="others">Outros</option>
+                        </select>
+                    </div>
                     <div class="input-group" style="margin-bottom: 25px; width: 10%;">
                         <span class="input-group-addon">Foto</span>
                         <label class="btn btn-warning">
