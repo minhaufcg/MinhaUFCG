@@ -40,7 +40,8 @@ const requestsCreateOne = function (req, res) {
         title : req.body.request.title,
         description: req.body.request.description,
         location: req.body.request.location,
-        img: req.body.request.img
+        img: req.body.request.img,
+        category: req.body.request.category
     };
     Request
         .create(newRequest)

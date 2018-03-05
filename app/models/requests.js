@@ -26,6 +26,11 @@ const requestSchema = Schema({
         default: "unset",
         enum: ["high", "regular", "low", "unset"]
     },
+    category: {
+        type : String,
+        default: "others",
+        enum : ["maintenance", "security", "suggestion", "cleaning", "others"]
+    },
     location: {
         description: String,
         lat: Number,

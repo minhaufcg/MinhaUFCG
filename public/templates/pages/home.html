@@ -11,6 +11,7 @@
             <option value="none">Nenhum</option>
             <option value="status">Status</option>
             <option value="priority">Prioridade</option>
+            <option value="category">Categoria</option>
         </select>
     </div>
 </div>
@@ -33,6 +34,19 @@
             <option value="regular">Normal</option>
             <option value="low">Baixa</option>
             <option value="unset">Indefinida</option>
+        </select>
+    </div>
+</div>
+
+<div class="filter-input" ng-if="requestFilter.type === 'category'">
+    <div style="width: 100%;" ng-init="statusFilter = 'all'">
+        <select class="form-control" style="width: 100%; margin-top: 28px" ng-model="requestFilter.subType">
+            <option value="all">Todas</option>
+            <option value="maintenance">Manutenção</option>
+            <option value="security">Segurança</option>
+            <option value="suggestion">Sugestão</option>
+            <option value="cleaning">Limpeza</option>
+            <option value="others">Outros</option>
         </select>
     </div>
 </div>

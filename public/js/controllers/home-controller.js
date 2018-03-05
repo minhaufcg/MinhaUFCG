@@ -67,10 +67,12 @@ angular.module('mufcg')
 
 
     $scope.$watchCollection('requestFilter', function (filter) {
+        console.log('heeere');
         if (!requests)
             return;
 
         if (filter === 'none') {
+            console.log(requests);
             displayRequests(requests);
             return;
         }
